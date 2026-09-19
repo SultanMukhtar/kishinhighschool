@@ -84,7 +84,7 @@ export default function LoginForm() {
             onChange={(e) => setIcName(e.target.value)}
             placeholder="Masukkan nama IC"
             required
-            className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-kishin-white placeholder:text-white/30 outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
+            className="w-full rounded-lg border border-kishin-line/10 bg-kishin-inset/40 px-4 py-3 text-sm text-kishin-white placeholder:text-kishin-white/30 outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
           />
         </div>
 
@@ -97,7 +97,7 @@ export default function LoginForm() {
               value={className}
               onChange={(e) => setClassName(e.target.value)}
               required
-              className="w-full appearance-none rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-kishin-white outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
+              className="w-full appearance-none rounded-lg border border-kishin-line/10 bg-kishin-inset/40 px-4 py-3 text-sm text-kishin-white outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
             >
               <option value="" disabled className="text-black">
                 Pilih Class
@@ -124,7 +124,7 @@ export default function LoginForm() {
             onChange={(e) => setAge(e.target.value)}
             placeholder="Masukkan umur IC"
             required
-            className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-kishin-white placeholder:text-white/30 outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
+            className="w-full rounded-lg border border-kishin-line/10 bg-kishin-inset/40 px-4 py-3 text-sm text-kishin-white placeholder:text-kishin-white/30 outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
           />
         </div>
 
@@ -134,12 +134,12 @@ export default function LoginForm() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="flex items-start gap-2 overflow-hidden rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-300"
+              className="flex items-start gap-2 overflow-hidden rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-700 dark:text-emerald-300"
             >
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
               <div className="text-xs leading-relaxed">
                 <p className="font-semibold tracking-wide">IDENTITY VERIFIED</p>
-                <p className="mt-0.5 text-emerald-200/80">
+                <p className="mt-0.5 text-emerald-700/80 dark:text-emerald-200/80">
                   Welcome to Kishin High School, {feedback.name}.
                 </p>
               </div>
@@ -155,7 +155,7 @@ export default function LoginForm() {
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <div className="text-xs leading-relaxed">
                 <p className="font-semibold tracking-wide">IDENTITY VERIFICATION FAILED</p>
-                <p className="mt-0.5 text-red-200/80">{feedback.message}</p>
+                <p className="mt-0.5 text-kishin-redlight/90">{feedback.message}</p>
               </div>
             </motion.div>
           )}

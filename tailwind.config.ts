@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: ["selector", '[data-theme="dark"]'],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,16 +10,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Backed by CSS custom properties in globals.css so the whole
+        // palette re-themes at once via the [data-theme] attribute —
+        // see the "THEME TOKENS" block at the top of globals.css.
         kishin: {
-          black: "#0a0a0a",
-          charcoal: "#121212",
-          panel: "#161414",
-          maroon: "#3a0d0d",
-          maroon2: "#5c1414",
-          red: "#c81e2c",
-          redlight: "#e8384a",
-          gray: "#8a8a8a",
-          white: "#f5f2f0",
+          black: "rgb(var(--kishin-black) / <alpha-value>)",
+          charcoal: "rgb(var(--kishin-charcoal) / <alpha-value>)",
+          panel: "rgb(var(--kishin-panel) / <alpha-value>)",
+          maroon: "rgb(var(--kishin-maroon) / <alpha-value>)",
+          maroon2: "rgb(var(--kishin-maroon2) / <alpha-value>)",
+          red: "rgb(var(--kishin-red) / <alpha-value>)",
+          redlight: "rgb(var(--kishin-redlight) / <alpha-value>)",
+          gray: "rgb(var(--kishin-gray) / <alpha-value>)",
+          white: "rgb(var(--kishin-white) / <alpha-value>)",
+          gold: "rgb(var(--kishin-gold) / <alpha-value>)",
+          /** Hairline borders / subtle highlight overlays — light-on-dark
+           *  in dark mode, dark-on-light in light mode. */
+          line: "rgb(var(--kishin-line) / <alpha-value>)",
+          /** Recessed surface fills (inputs, chips, badges) — same
+           *  light/dark-flip logic as `line`. */
+          inset: "rgb(var(--kishin-inset) / <alpha-value>)",
         },
       },
       fontFamily: {
@@ -29,8 +40,8 @@ const config: Config = {
         "grain": "url('/assets/grain.png')",
       },
       boxShadow: {
-        "red-glow": "0 0 40px -10px rgba(200,30,44,0.5)",
-        "red-glow-sm": "0 0 20px -5px rgba(200,30,44,0.45)",
+        "red-glow": "0 0 40px -10px rgb(var(--kishin-red) / 0.5)",
+        "red-glow-sm": "0 0 20px -5px rgb(var(--kishin-red) / 0.45)",
       },
       keyframes: {
         kenburns: {

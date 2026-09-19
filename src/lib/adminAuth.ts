@@ -2,7 +2,7 @@ import "server-only";
 import { createHash } from "crypto";
 
 /**
- * Access code gate for /admin. Server-only — the code and the derived
+ * Access code gate for /admin. Server-only - the code and the derived
  * session token never reach the client bundle (unlike a client-side JS
  * check, which anyone can read out of dev tools).
  *

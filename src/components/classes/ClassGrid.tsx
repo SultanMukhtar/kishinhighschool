@@ -25,7 +25,7 @@ export default function ClassGrid({ classes, specialClassrooms }: ClassGridProps
               className={`glass-card relative flex flex-col overflow-hidden rounded-2xl border p-6 ${
                 isOwnClass
                   ? "border-kishin-red/70 shadow-red-glow-sm"
-                  : "border-white/8"
+                  : "border-kishin-line/8"
               }`}
             >
               {isOwnClass && (
@@ -50,7 +50,7 @@ export default function ClassGrid({ classes, specialClassrooms }: ClassGridProps
                 {c.description}
               </p>
 
-              <div className="mb-4 flex flex-col gap-2 border-t border-white/8 pt-4 text-xs">
+              <div className="mb-4 flex flex-col gap-2 border-t border-kishin-line/8 pt-4 text-xs">
                 <Row label="STATUS">
                   <StatusBadge status={isOwnClass && student ? student.status : c.status} />
                 </Row>
@@ -85,7 +85,7 @@ export default function ClassGrid({ classes, specialClassrooms }: ClassGridProps
         {specialClassrooms.map((s) => (
           <div
             key={s.id}
-            className="glass-card flex flex-col gap-3 rounded-xl border border-white/8 p-5"
+            className="glass-card flex flex-col gap-3 rounded-xl border border-kishin-line/8 p-5"
           >
             <h3 className="font-display text-lg tracking-[0.04em] text-kishin-white">{s.name}</h3>
             <StatusBadge status={s.status} />
@@ -93,7 +93,7 @@ export default function ClassGrid({ classes, specialClassrooms }: ClassGridProps
               href={s.discordUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-[11px] font-bold tracking-[0.12em] text-kishin-gray transition hover:border-kishin-red/40 hover:text-kishin-redlight"
+              className="mt-1 flex items-center justify-center gap-2 rounded-lg border border-kishin-line/10 bg-kishin-inset/30 px-3 py-2 text-[11px] font-bold tracking-[0.12em] text-kishin-gray transition hover:border-kishin-red/40 hover:text-kishin-redlight"
             >
               OPEN DISCORD <ExternalLink className="h-3 w-3" />
             </a>

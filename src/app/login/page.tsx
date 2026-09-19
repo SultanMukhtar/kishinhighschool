@@ -5,10 +5,13 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import BackgroundSlideshow from "@/components/BackgroundSlideshow";
 import LoginForm from "@/components/LoginForm";
+import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function LoginPage() {
   const { student, isLoading } = useAuth();
+  const { theme } = useTheme();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,7 +22,8 @@ export default function LoginPage() {
 
   return (
     <main className="relative min-h-screen w-full">
-      <BackgroundSlideshow />
+      <BackgroundSlideshow dimmed={theme === "dark"} />
+      <ThemeToggle className="fixed right-4 top-4 z-20" />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

@@ -15,10 +15,10 @@ export function AccordionItem({ title, index, children, defaultOpen }: Accordion
   const [open, setOpen] = useState(!!defaultOpen);
 
   return (
-    <div className="glass-card overflow-hidden rounded-xl border border-white/8">
+    <div className="glass-card overflow-hidden rounded-xl border border-kishin-line/8">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-white/5"
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-kishin-line/5"
       >
         <div className="flex items-center gap-3">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-kishin-red/15 font-display text-sm text-kishin-red">
@@ -41,7 +41,7 @@ export function AccordionItem({ title, index, children, defaultOpen }: Accordion
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="border-t border-white/8 px-5 py-4">{children}</div>
+            <div className="border-t border-kishin-line/8 px-5 py-4">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>

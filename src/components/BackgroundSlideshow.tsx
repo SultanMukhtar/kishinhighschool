@@ -16,7 +16,20 @@ const FALLBACK_GRADIENTS = [
 
 const SLIDE_DURATION = 6000;
 
-export default function BackgroundSlideshow() {
+interface BackgroundSlideshowProps {
+  /** Applies a slight blur over the media (used on the login form for
+   *  readability). Defaults to true; pass false to show the media sharp. */
+  blurred?: boolean;
+  /** Darkens the media with overlay layers (used on the login form for
+   *  contrast against the glass card). Defaults to true; pass false to
+   *  show the media at full brightness/clarity. */
+  dimmed?: boolean;
+}
+
+export default function BackgroundSlideshow({
+  blurred = true,
+  dimmed = true,
+}: BackgroundSlideshowProps) {
   const { media } = useMedia();
   const [index, setIndex] = useState(0);
 
@@ -65,10 +78,16 @@ export default function BackgroundSlideshow() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute inset-0 bg-black/65" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.75)_100%)]" />
-      <div className="absolute inset-0 backdrop-blur-[2px]" />
+      {dimmed && (
+        <>
+          {/* Tinted with the theme's base canvas color: black in dark mode
+              (unchanged), white in light mode. */}
+          <div className="absolute inset-0 bg-[rgb(var(--kishin-black)/0.65)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--kishin-black))] via-[rgb(var(--kishin-black)/0.4)] to-[rgb(var(--kishin-black)/0.6)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgb(var(--kishin-black)/0.75)_100%)]" />
+        </>
+      )}
+      {blurred && <div className="absolute inset-0 backdrop-blur-[2px]" />}
 
       <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {slides.map((_, i) => (

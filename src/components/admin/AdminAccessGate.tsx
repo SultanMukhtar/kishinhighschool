@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert, KeyRound, AlertTriangle } from "lucide-react";
 import KishinLogo from "@/components/KishinLogo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function AdminAccessGate() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function AdminAccessGate() {
   return (
     <main className="relative flex min-h-screen w-full items-center justify-center bg-kishin-black px-4">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(200,30,44,0.1),transparent_65%)]" />
+      <ThemeToggle className="fixed right-4 top-4 z-20" />
 
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -71,7 +73,7 @@ export default function AdminAccessGate() {
               placeholder="Kode akses"
               autoFocus
               required
-              className="w-full rounded-lg border border-white/10 bg-black/40 py-3 pl-10 pr-4 text-sm text-kishin-white placeholder:text-white/30 outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
+              className="w-full rounded-lg border border-kishin-line/10 bg-kishin-inset/40 py-3 pl-10 pr-4 text-sm text-kishin-white placeholder:text-kishin-white/30 outline-none transition focus:border-kishin-red/70 focus:shadow-red-glow-sm"
             />
           </div>
 

@@ -18,7 +18,7 @@ export default function KishinLogo({ size = 40, className = "" }: KishinLogoProp
 
   return (
     <div
-      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-kishin-red/60 bg-black/60 ${className}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-kishin-red/60 bg-kishin-inset/60 ${className}`}
       style={{ width: size, height: size }}
     >
       {media.logoUrl ? (

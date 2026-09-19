@@ -32,7 +32,7 @@ export default function ProfilePage() {
       <div className="glass-card relative overflow-hidden rounded-2xl p-6 shadow-red-glow-sm sm:p-8">
         <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-kishin-red/10 blur-3xl" />
 
-        <div className="mb-6 flex flex-col items-center gap-4 border-b border-white/8 pb-6 text-center sm:flex-row sm:text-left">
+        <div className="mb-6 flex flex-col items-center gap-4 border-b border-kishin-line/8 pb-6 text-center sm:flex-row sm:text-left">
           <KishinLogo size={80} className="border-2 shadow-red-glow-sm" />
           <div>
             <h2 className="font-display text-2xl tracking-[0.05em] text-kishin-white">
@@ -51,7 +51,7 @@ export default function ProfilePage() {
             return (
               <div
                 key={f.label}
-                className="flex items-center gap-4 rounded-xl border border-white/8 bg-black/30 px-4 py-3.5"
+                className="flex items-center gap-4 rounded-xl border border-kishin-line/8 bg-kishin-inset/30 px-4 py-3.5"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-kishin-red/10 text-kishin-red">
                   <Icon className="h-[18px] w-[18px]" />

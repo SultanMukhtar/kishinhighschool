@@ -2,6 +2,7 @@
 
 import { Menu, User } from "lucide-react";
 import { Student } from "@/data/students";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface TopbarProps {
   student: Student;
@@ -11,10 +12,10 @@ interface TopbarProps {
 
 export default function Topbar({ student, onMenuClick, title }: TopbarProps) {
   return (
-    <header className="glass-panel sticky top-0 z-20 flex items-center gap-4 border-b border-white/8 px-4 py-4 sm:px-6">
+    <header className="glass-panel sticky top-0 z-20 flex items-center gap-4 border-b border-kishin-line/8 px-4 py-4 sm:px-6">
       <button
         onClick={onMenuClick}
-        className="rounded-md p-2 text-kishin-white hover:bg-white/5 lg:hidden"
+        className="rounded-md p-2 text-kishin-white hover:bg-kishin-line/5 lg:hidden"
         aria-label="Open menu"
       >
         <Menu className="h-5 w-5" />
@@ -26,7 +27,9 @@ export default function Topbar({ student, onMenuClick, title }: TopbarProps) {
         </p>
       </div>
 
-      <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-black/40 py-1.5 pl-1.5 pr-4">
+      <ThemeToggle />
+
+      <div className="flex items-center gap-2.5 rounded-full border border-kishin-line/10 bg-kishin-inset/40 py-1.5 pl-1.5 pr-4">
         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-kishin-red/20 text-kishin-red">
           <User className="h-4 w-4" />
         </div>

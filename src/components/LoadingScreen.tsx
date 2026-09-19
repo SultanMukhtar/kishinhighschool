@@ -41,7 +41,7 @@ export default function LoadingScreen() {
           </motion.p>
         </div>
 
-        <div className="h-[2px] w-48 overflow-hidden rounded-full bg-white/10">
+        <div className="h-[2px] w-48 overflow-hidden rounded-full bg-kishin-line/10">
           <motion.div
             className="h-full bg-kishin-red"
             initial={{ x: "-100%" }}

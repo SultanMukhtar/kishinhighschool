@@ -28,6 +28,7 @@ import type { MediaResult } from "@/data/media.server";
 import { SheetResult, SheetSource } from "@/lib/sheets";
 import StatusBadge from "@/components/ui/StatusBadge";
 import KishinLogo from "@/components/KishinLogo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 type Tab = "students" | "classes" | "teachers" | "announcements" | "facilities" | "media";
 
@@ -45,17 +46,17 @@ const SOURCE_META: Record<SheetSource, { icon: React.ElementType; label: string;
   sheet: {
     icon: Database,
     label: "LIVE FROM GOOGLE SHEETS",
-    classes: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
+    classes: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
   },
   mixed: {
     icon: Layers,
     label: "SEBAGIAN DARI SHEETS, SEBAGIAN FALLBACK",
-    classes: "border-sky-500/40 bg-sky-500/10 text-sky-300",
+    classes: "border-sky-500/40 bg-sky-500/10 text-sky-700 dark:text-sky-300",
   },
   fallback: {
     icon: HardDrive,
     label: "DEMO / FALLBACK DATA",
-    classes: "border-amber-500/40 bg-amber-500/10 text-amber-300",
+    classes: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
   },
 };
 
@@ -126,7 +127,7 @@ export default function AdminPanelClient({
     <div className="min-h-screen bg-kishin-black">
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(200,30,44,0.1),transparent_60%)]" />
 
-      <header className="glass-panel sticky top-0 z-20 border-b border-white/8 px-4 py-4 sm:px-8">
+      <header className="glass-panel sticky top-0 z-20 border-b border-kishin-line/8 px-4 py-4 sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <KishinLogo size={40} />
@@ -138,9 +139,10 @@ export default function AdminPanelClient({
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Link
               href="/dashboard"
-              className="flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-kishin-gray transition hover:border-kishin-red/40 hover:text-kishin-redlight"
+              className="flex items-center gap-1.5 rounded-lg border border-kishin-line/10 px-3 py-2 text-xs font-semibold text-kishin-gray transition hover:border-kishin-red/40 hover:text-kishin-redlight"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">BACK TO DASHBOARD</span>
@@ -166,9 +168,9 @@ export default function AdminPanelClient({
         </div>
 
         <div className="glass-card mb-8 flex items-start gap-3 rounded-2xl border border-sky-500/25 bg-sky-500/5 p-5">
-          <Eye className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" />
-          <p className="text-xs leading-relaxed text-sky-200/80">
-            Panel ini bersifat <span className="font-bold">view-only</span> — data ditampilkan
+          <Eye className="mt-0.5 h-4 w-4 shrink-0 text-sky-700 dark:text-sky-300" />
+          <p className="text-xs leading-relaxed text-sky-800/80 dark:text-sky-200/80">
+            Panel ini bersifat <span className="font-bold">view-only</span> - data ditampilkan
             langsung dari Google Sheets yang dipublikasikan (auto-refresh setiap kunjungan) dan
             tidak ada kontrol untuk mengubah apa pun di sini. Untuk mengubah data (termasuk status
             siswa), edit langsung di Google Sheets.
@@ -203,7 +205,7 @@ export default function AdminPanelClient({
           <div className="glass-card overflow-x-auto rounded-2xl">
             <table className="w-full min-w-[720px] text-left text-sm">
               <thead>
-                <tr className="border-b border-white/8 text-[10px] tracking-[0.15em] text-kishin-gray">
+                <tr className="border-b border-kishin-line/8 text-[10px] tracking-[0.15em] text-kishin-gray">
                   <th className="px-5 py-4">STUDENT ID</th>
                   <th className="px-5 py-4">IC NAME</th>
                   <th className="px-5 py-4">ROBLOX</th>
@@ -215,7 +217,7 @@ export default function AdminPanelClient({
               </thead>
               <tbody>
                 {studentsResult.data.map((s) => (
-                  <tr key={s.id} className="border-b border-white/5 last:border-0">
+                  <tr key={s.id} className="border-b border-kishin-line/5 last:border-0">
                     <td className="px-5 py-4 font-mono text-xs text-kishin-gray">{s.id}</td>
                     <td className="px-5 py-4 font-semibold text-kishin-white">{s.icName}</td>
                     <td className="px-5 py-4 text-kishin-gray">{s.robloxUsername}</td>
@@ -274,7 +276,7 @@ export default function AdminPanelClient({
           <div className="glass-card overflow-x-auto rounded-2xl">
             <table className="w-full min-w-[560px] text-left text-sm">
               <thead>
-                <tr className="border-b border-white/8 text-[10px] tracking-[0.15em] text-kishin-gray">
+                <tr className="border-b border-kishin-line/8 text-[10px] tracking-[0.15em] text-kishin-gray">
                   <th className="px-5 py-4">NAME</th>
                   <th className="px-5 py-4">SUBJECT / MATERI</th>
                   <th className="px-5 py-4">ROLE</th>
@@ -282,7 +284,7 @@ export default function AdminPanelClient({
               </thead>
               <tbody>
                 {teachersResult.data.map((t) => (
-                  <tr key={t.id} className="border-b border-white/5 last:border-0">
+                  <tr key={t.id} className="border-b border-kishin-line/5 last:border-0">
                     <td className="px-5 py-4 font-semibold text-kishin-white">{t.name}</td>
                     <td className="px-5 py-4 text-kishin-gray">{t.subject}</td>
                     <td className="px-5 py-4">
@@ -351,7 +353,7 @@ export default function AdminPanelClient({
                 {Array.from({ length: 6 }, (_, i) => mediaResult.data.loginBackgrounds[i] || "").map(
                   (url, i) => (
                     <div key={i} className="glass-card overflow-hidden rounded-xl">
-                      <div className="flex aspect-video items-center justify-center bg-black/40">
+                      <div className="flex aspect-video items-center justify-center bg-kishin-inset/40">
                         {url ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={url} alt={`Login background ${i + 1}`} className="h-full w-full object-cover" />

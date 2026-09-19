@@ -31,7 +31,7 @@ export default function CoachingClinicPage() {
             key={coach.id}
             className="glass-card flex flex-col items-center gap-3 rounded-2xl p-5 text-center transition hover:border-kishin-red/40 hover:shadow-red-glow-sm"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-kishin-red/50 bg-black/50 text-kishin-red">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-kishin-red/50 bg-kishin-inset/50 text-kishin-red">
               <Swords className="h-6 w-6" />
             </div>
             <p className="font-display text-lg tracking-[0.04em] text-kishin-white">

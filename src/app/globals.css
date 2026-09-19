@@ -2,9 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   THEME TOKENS
+   Dark mode (default) is the original Kishin palette. Light mode
+   (data-theme="light") swaps to white/red/gold. Every `kishin-*`
+   Tailwind color and the classes below read from these variables,
+   so switching the attribute re-themes the whole site at once.
+   Values are "R G B" triplets (no commas) for Tailwind's
+   rgb(var(--x) / <alpha-value>) opacity syntax.
+   ============================================================ */
 :root {
   --font-display: var(--font-bebas), sans-serif;
   --font-body: var(--font-inter), sans-serif;
+
+  --kishin-black: 10 10 10;
+  --kishin-charcoal: 18 18 18;
+  --kishin-panel: 22 20 20;
+  --kishin-maroon: 58 13 13;
+  --kishin-maroon2: 92 20 20;
+  --kishin-red: 200 30 44;
+  --kishin-redlight: 232 56 74;
+  --kishin-gray: 138 138 138;
+  --kishin-white: 245 242 240;
+  --kishin-gold: 197 160 89;
+  --kishin-line: 255 255 255;
+  --kishin-inset: 0 0 0;
+}
+
+[data-theme="light"] {
+  --kishin-black: 255 255 255;
+  --kishin-charcoal: 250 247 241;
+  --kishin-panel: 255 255 255;
+  --kishin-maroon: 250 225 202;
+  --kishin-maroon2: 240 200 162;
+  --kishin-red: 190 24 38;
+  --kishin-redlight: 210 40 54;
+  --kishin-gray: 108 98 90;
+  --kishin-white: 26 18 14;
+  --kishin-gold: 168 128 32;
+  --kishin-line: 26 18 14;
+  --kishin-inset: 26 18 14;
 }
 
 * {
@@ -15,14 +52,15 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: #0a0a0a;
-  color: #f5f2f0;
+  background-color: rgb(var(--kishin-black));
+  color: rgb(var(--kishin-white));
   scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-body);
   position: relative;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body::before {
@@ -41,14 +79,14 @@ body::before {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #121212;
+  background: rgb(var(--kishin-charcoal));
 }
 ::-webkit-scrollbar-thumb {
-  background: #3a0d0d;
+  background: rgb(var(--kishin-maroon));
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c81e2c;
+  background: rgb(var(--kishin-red));
 }
 
 .font-display {
@@ -57,24 +95,24 @@ body::before {
 }
 
 .glass-panel {
-  background: rgba(18, 16, 16, 0.55);
+  background: rgb(var(--kishin-panel) / 0.55);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(200, 30, 44, 0.18);
+  border: 1px solid rgb(var(--kishin-red) / 0.18);
 }
 
 .glass-card {
-  background: rgba(22, 20, 20, 0.6);
+  background: rgb(var(--kishin-panel) / 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgb(var(--kishin-line) / 0.06);
 }
 
 .text-glow {
-  text-shadow: 0 0 20px rgba(200, 30, 44, 0.55);
+  text-shadow: 0 0 20px rgb(var(--kishin-red) / 0.55);
 }
 
 .divider-line {
-  background: linear-gradient(90deg, transparent, rgba(200, 30, 44, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--kishin-red) / 0.6), transparent);
   height: 1px;
 }

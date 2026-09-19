@@ -1,13 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Settings, LogOut, Info } from "lucide-react";
+import { Settings, LogOut, Info, Sun, Moon } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function SettingsPage() {
   const { student, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
   const router = useRouter();
 
   if (!student) return <AppShell>{null}</AppShell>;
@@ -59,9 +61,42 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        <div className="glass-card rounded-2xl p-6">
+          <h2 className="mb-4 font-display text-lg tracking-[0.08em] text-kishin-white">
+            APPEARANCE
+          </h2>
+          <p className="mb-4 text-xs text-kishin-gray">
+            Pilih tampilan situs sesuai preferensi Anda.
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setTheme("dark")}
+              className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-3 text-xs font-bold tracking-[0.12em] transition ${
+                theme === "dark"
+                  ? "border-kishin-red/50 bg-kishin-red/10 text-kishin-red"
+                  : "border-kishin-line/10 bg-kishin-inset/20 text-kishin-gray hover:border-kishin-line/20"
+              }`}
+            >
+              <Moon className="h-4 w-4" />
+              DARK MODE
+            </button>
+            <button
+              onClick={() => setTheme("light")}
+              className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-3 text-xs font-bold tracking-[0.12em] transition ${
+                theme === "light"
+                  ? "border-kishin-red/50 bg-kishin-red/10 text-kishin-red"
+                  : "border-kishin-line/10 bg-kishin-inset/20 text-kishin-gray hover:border-kishin-line/20"
+              }`}
+            >
+              <Sun className="h-4 w-4" />
+              LIGHT MODE
+            </button>
+          </div>
+        </div>
+
         <div className="glass-card flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-          <p className="text-xs leading-relaxed text-amber-200/80">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+          <p className="text-xs leading-relaxed text-amber-800/80 dark:text-amber-200/80">
             Website ini tidak menggunakan database server. Seluruh sesi dan data pengaturan hanya
             tersimpan pada LocalStorage perangkat/browser ini dan tidak tersinkronisasi ke server
             manapun.

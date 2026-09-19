@@ -46,7 +46,7 @@ export default function CurriculumPage() {
             </p>
           </div>
         </div>
-        <div className="hidden h-10 w-px bg-white/10 sm:block" />
+        <div className="hidden h-10 w-px bg-kishin-line/10 sm:block" />
         <div className="flex items-center gap-3">
           <Timer className="h-5 w-5 text-kishin-red" />
           <div>

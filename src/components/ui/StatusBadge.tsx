@@ -4,10 +4,10 @@ interface StatusBadgeProps {
 }
 
 const variantStyles: Record<string, string> = {
-  success: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
+  success: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
   danger: "border-kishin-red/40 bg-kishin-red/10 text-kishin-redlight",
-  warning: "border-amber-500/40 bg-amber-500/10 text-amber-300",
-  neutral: "border-white/15 bg-white/5 text-kishin-gray",
+  warning: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  neutral: "border-kishin-line/15 bg-kishin-line/5 text-kishin-gray",
 };
 
 function inferVariant(status: string): keyof typeof variantStyles {

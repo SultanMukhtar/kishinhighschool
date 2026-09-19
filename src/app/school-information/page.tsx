@@ -58,7 +58,7 @@ export default function SchoolInformationPage() {
                   href={c.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group rounded-lg border border-white/8 bg-black/30 px-4 py-3 transition hover:border-kishin-red/40 hover:bg-black/50"
+                  className="group rounded-lg border border-kishin-line/8 bg-kishin-inset/30 px-4 py-3 transition hover:border-kishin-red/40 hover:bg-kishin-inset/50"
                 >
                   <p className="flex items-center gap-1.5 font-mono text-sm font-semibold text-kishin-redlight">
                     {c.channel}
@@ -69,7 +69,7 @@ export default function SchoolInformationPage() {
               ) : (
                 <div
                   key={c.channel}
-                  className="rounded-lg border border-white/8 bg-black/30 px-4 py-3"
+                  className="rounded-lg border border-kishin-line/8 bg-kishin-inset/30 px-4 py-3"
                 >
                   <p className="font-mono text-sm font-semibold text-kishin-redlight">
                     {c.channel}

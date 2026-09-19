@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import LoadingScreen from "@/components/LoadingScreen";
+import WelcomeScreen from "@/components/WelcomeScreen";
 import { useAuth } from "@/context/AuthContext";
 
 const BOOT_DURATION_MS = 1100;
@@ -26,13 +27,22 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (booting || isLoading) return;
-    router.replace(student ? "/dashboard" : "/login");
+    // Returning users with a session skip the welcome screen entirely.
+    if (booting || isLoading || !student) return;
+    router.replace("/dashboard");
   }, [booting, isLoading, student, router]);
+
+  const showWelcome = !booting && !isLoading && !student;
 
   return (
     <main className="relative min-h-screen w-full bg-kishin-black">
-      <AnimatePresence>{booting && <LoadingScreen key="loading" />}</AnimatePresence>
+      <AnimatePresence mode="wait">
+        {booting ? (
+          <LoadingScreen key="loading" />
+        ) : showWelcome ? (
+          <WelcomeScreen key="welcome" />
+        ) : null}
+      </AnimatePresence>
     </main>
   );
 }

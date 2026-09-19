@@ -97,10 +97,10 @@ export default function DashboardPage() {
 
       {lockedFeatures.length > 0 && (
         <div className="glass-card mb-8 flex items-start gap-3 rounded-xl border border-amber-500/25 bg-amber-500/5 p-4">
-          <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-          <p className="text-xs leading-relaxed text-amber-200/80">
+          <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+          <p className="text-xs leading-relaxed text-amber-800/80 dark:text-amber-200/80">
             Status keanggotaan Anda saat ini adalah{" "}
-            <span className="font-bold text-amber-200">{student.status}</span>, sehingga beberapa
+            <span className="font-bold text-amber-800 dark:text-amber-200">{student.status}</span>, sehingga beberapa
             fitur (ditandai ikon gembok di sidebar) sedang tidak dapat diakses.
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
             <InfoRow label="Student ID" value={student.id} />
           </div>
 
-          <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5">
+          <div className="mt-6 flex items-center justify-between border-t border-kishin-line/8 pt-5">
             <span className="text-xs tracking-[0.2em] text-kishin-gray">STATUS</span>
             <StatusBadge status={student.status} />
           </div>

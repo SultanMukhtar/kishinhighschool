@@ -55,7 +55,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
   const content = (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 border-b border-white/8 px-6 py-6">
+      <div className="flex items-center gap-3 border-b border-kishin-line/8 px-6 py-6">
         <KishinLogo size={40} className="shadow-red-glow-sm" />
         <div className="min-w-0">
           <p className="truncate font-display text-lg tracking-[0.1em] text-kishin-white">
@@ -65,7 +65,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </div>
         <button
           onClick={onClose}
-          className="ml-auto rounded-md p-1.5 text-kishin-gray hover:bg-white/5 hover:text-white lg:hidden"
+          className="ml-auto rounded-md p-1.5 text-kishin-gray hover:bg-kishin-line/5 hover:text-kishin-white lg:hidden"
           aria-label="Close menu"
         >
           <X className="h-5 w-5" />
@@ -86,10 +86,10 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                   title={locked ? "Fitur dikunci untuk status keanggotaan Anda saat ini" : undefined}
                   className={`group flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-all ${
                     locked
-                      ? "text-kishin-gray/50 hover:bg-white/5 hover:text-kishin-gray"
+                      ? "text-kishin-gray/50 hover:bg-kishin-line/5 hover:text-kishin-gray"
                       : active
                         ? "bg-kishin-red/15 text-kishin-white shadow-[inset_2px_0_0_0_#c81e2c]"
-                        : "text-kishin-gray hover:bg-white/5 hover:text-kishin-white"
+                        : "text-kishin-gray hover:bg-kishin-line/5 hover:text-kishin-white"
                   }`}
                 >
                   <Icon
@@ -110,7 +110,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </ul>
       </nav>
 
-      <div className="border-t border-white/8 p-4">
+      <div className="border-t border-kishin-line/8 p-4">
         <button
           onClick={handleLogout}
           className="flex w-full items-center gap-3 rounded-lg border border-kishin-red/30 bg-kishin-red/5 px-3.5 py-2.5 text-sm font-semibold tracking-wide text-kishin-redlight transition hover:bg-kishin-red/20"
