@@ -8,8 +8,10 @@ import {
   HeartHandshake,
   PenTool,
   Music,
+  Languages,
   Clock,
   Timer,
+  ExternalLink,
 } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
@@ -22,6 +24,7 @@ const iconMap: Record<string, React.ElementType> = {
   "heart-handshake": HeartHandshake,
   "pen-tool": PenTool,
   music: Music,
+  languages: Languages,
 };
 
 export default function CurriculumPage() {
@@ -74,6 +77,14 @@ export default function CurriculumPage() {
                 {subj.subject}
               </h3>
               <p className="mt-2 text-sm font-medium text-kishin-redlight">{subj.teacher}</p>
+              <a
+                href={subj.discordUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-kishin-red/40 bg-kishin-red/10 px-4 py-2.5 text-xs font-bold tracking-[0.15em] text-kishin-redlight transition hover:bg-kishin-red/20"
+              >
+                OPEN DISCORD <ExternalLink className="h-3.5 w-3.5" />
+              </a>
             </div>
           );
         })}

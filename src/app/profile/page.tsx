@@ -1,6 +1,6 @@
 "use client";
 
-import { IdCard, Gamepad2, MessageCircle, GraduationCap, Cake, Fingerprint } from "lucide-react";
+import { IdCard, Gamepad2, MessageCircle, GraduationCap, Cake, Fingerprint, BookMarked } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
 import StatusBadge from "@/components/ui/StatusBadge";
@@ -8,24 +8,40 @@ import { useAuth } from "@/context/AuthContext";
 import KishinLogo from "@/components/KishinLogo";
 
 export default function ProfilePage() {
-  const { student } = useAuth();
-  if (!student) return <AppShell>{null}</AppShell>;
+  const { user } = useAuth();
+  if (!user) return <AppShell>{null}</AppShell>;
 
-  const fields = [
-    { label: "IC Name", value: student.icName, icon: IdCard },
-    { label: "Roblox Username", value: student.robloxUsername, icon: Gamepad2 },
-    { label: "Discord Username", value: student.discordUsername, icon: MessageCircle },
-    { label: "Class", value: student.class, icon: GraduationCap },
-    { label: "IC Age", value: `${student.age} Tahun`, icon: Cake },
-    { label: "Student ID", value: student.id, icon: Fingerprint },
-  ];
+  const isStudent = user.role === "STUDENT";
+  const pageTitle = isStudent ? "STUDENT PROFILE" : user.role === "COACH" ? "COACH PROFILE" : "TEACHER PROFILE";
+
+  const fields = isStudent
+    ? [
+        { label: "IC Name", value: user.icName, icon: IdCard },
+        { label: "Roblox Username", value: user.robloxUsername, icon: Gamepad2 },
+        { label: "Discord Username", value: user.discordUsername, icon: MessageCircle },
+        { label: "Class", value: user.class, icon: GraduationCap },
+        { label: "IC Age", value: `${user.age} Tahun`, icon: Cake },
+        { label: "Student ID", value: user.id, icon: Fingerprint },
+      ]
+    : [
+        { label: "IC Name", value: user.icName, icon: IdCard },
+        { label: "Roblox Username", value: user.robloxUsername, icon: Gamepad2 },
+        { label: "Discord Username", value: user.discordUsername, icon: MessageCircle },
+        { label: "Subject / Materi", value: user.subject || "-", icon: BookMarked },
+        { label: "IC Age", value: `${user.age} Tahun`, icon: Cake },
+        { label: "Staff ID", value: user.id, icon: Fingerprint },
+      ];
 
   return (
-    <AppShell title="Student Profile">
+    <AppShell title={isStudent ? "Student Profile" : "Staff Profile"}>
       <PageHeader
         eyebrow="IDENTITY RECORD"
-        title="STUDENT PROFILE"
-        description="Data identitas resmi siswa/siswi yang terdaftar dalam sistem Kishin High School."
+        title={pageTitle}
+        description={
+          isStudent
+            ? "Data identitas resmi siswa/siswi yang terdaftar dalam sistem Kishin High School."
+            : "Data identitas resmi staff pengajar yang terdaftar dalam sistem Kishin High School."
+        }
         icon={<IdCard className="h-5 w-5" />}
       />
 
@@ -36,11 +52,11 @@ export default function ProfilePage() {
           <KishinLogo size={80} className="border-2 shadow-red-glow-sm" />
           <div>
             <h2 className="font-display text-2xl tracking-[0.05em] text-kishin-white">
-              {student.icName}
+              {user.icName}
             </h2>
-            <p className="text-xs tracking-[0.15em] text-kishin-gray">{student.id}</p>
+            <p className="text-xs tracking-[0.15em] text-kishin-gray">{user.id}</p>
             <div className="mt-2 flex justify-center gap-2 sm:justify-start">
-              <StatusBadge status={student.status} />
+              <StatusBadge status={user.status} />
             </div>
           </div>
         </div>

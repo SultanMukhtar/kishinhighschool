@@ -8,11 +8,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function SettingsPage() {
-  const { student, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
 
-  if (!student) return <AppShell>{null}</AppShell>;
+  if (!user) return <AppShell>{null}</AppShell>;
 
   const handleLogout = () => {
     logout();
@@ -36,21 +36,21 @@ export default function SettingsPage() {
           <div className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
-                STUDENT ID
+                {user.role === "STUDENT" ? "STUDENT ID" : "STAFF ID"}
               </p>
-              <p className="mt-1 font-semibold text-kishin-white">{student.id}</p>
+              <p className="mt-1 font-semibold text-kishin-white">{user.id}</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
                 IC NAME
               </p>
-              <p className="mt-1 font-semibold text-kishin-white">{student.icName}</p>
+              <p className="mt-1 font-semibold text-kishin-white">{user.icName}</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
                 CLASS
               </p>
-              <p className="mt-1 font-semibold text-kishin-white">{student.class}</p>
+              <p className="mt-1 font-semibold text-kishin-white">{user.class}</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">

@@ -1,5 +1,16 @@
 export const DISCORD_SERVER_URL = "https://discord.gg/xqtPvwhVV";
 
+export const schoolMotto = "Disiplin membentuk nama. Solidaritas membentuk keluarga.";
+
+export const backgroundStory = {
+  eyebrow: "BACKGROUND STORY",
+  title: "di balik gerbang merah Kishin",
+  paragraphs: [
+    "KISHIN HIGH SCHOOL merupakan sekolah elit yang dikenal karena menghasilkan lulusan terbaik sekaligus menjadi tempat lahirnya berbagai legenda. Di balik disiplin sekolah, terdapat persaingan, organisasi, perdagangan, hingga kelompok jalanan yang hidup berdampingan. Selama aturan utama sekolah tidak dilanggar, setiap kelompok bebas menjalankan pengaruhnya.",
+    "Komunitas ini menjadi ruang bersama bagi pemain dan penonton untuk mengenal para tokoh, class crew, dan peran-peran penting yang menjaga kehidupan Kishin tetap hidup setiap hari.",
+  ],
+};
+
 export const aboutSchool = {
   title: "ABOUT KISHIN HIGH SCHOOL",
   description:
@@ -32,7 +43,11 @@ export const discordChannelGuide: DiscordChannelGuideEntry[] = [
     description: "Channel obrolan umum seputar Kishin High School.",
     url: "https://discord.com/channels/1158678454896693248/1430643373160534247",
   },
-  { channel: "#MADINGSEKOLAH", description: "Papan pengumuman resmi Kishin High School." },
+  {
+    channel: "#MADINGSEKOLAH",
+    description: "Papan pengumuman resmi Kishin High School.",
+    url: "https://discord.com/channels/1158678454896693248/1549847706372022312",
+  },
   {
     channel: "#CHATINGAME",
     description: "Channel obrolan yang terhubung dengan chat in-game.",

@@ -1,29 +1,28 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { Student } from "@/data/students";
-import { getSession, clearSession } from "@/lib/auth";
+import { AuthUser, getSession, clearSession } from "@/lib/auth";
 
 interface AuthContextValue {
-  student: Student | null;
+  user: AuthUser | null;
   isLoading: boolean;
   refresh: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue>({
-  student: null,
+  user: null,
   isLoading: true,
   refresh: () => {},
   logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [student, setStudent] = useState<Student | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const refresh = () => {
-    setStudent(getSession());
+    setUser(getSession());
   };
 
   useEffect(() => {
@@ -33,11 +32,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     clearSession();
-    setStudent(null);
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ student, isLoading, refresh, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, refresh, logout }}>
       {children}
     </AuthContext.Provider>
   );

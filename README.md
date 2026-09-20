@@ -19,7 +19,9 @@ Sebelum Google Sheets dikonfigurasi, website tetap berjalan normal menggunakan *
 
 ## Login (data demo bawaan)
 
-Selama tab kelas belum dikonfigurasi, gunakan salah satu akun demo berikut:
+Halaman login punya dua portal (tab switcher di atas form): **SISWA** dan **GURU / COACH**. Tidak ada password di keduanya - identitas dicocokkan terhadap kolom-kolom di sheet.
+
+Selama tab kelas belum dikonfigurasi, gunakan salah satu akun demo Siswa berikut:
 
 | Nama IC | Class | Umur |
 |---|---|---|
@@ -27,13 +29,21 @@ Selama tab kelas belum dikonfigurasi, gunakan salah satu akun demo berikut:
 | Aiko Tanaka | CLASS B | 16 |
 | Haruto Sato | CLASS C | 18 |
 
-Tidak ada password - identitas dicocokkan terhadap Nama IC, Class, dan Umur.
+Login Siswa dicocokkan terhadap **Nama IC + Class + Umur**.
+
+Login Guru/Coach dicocokkan terhadap **Nama IC + Roblox Username + Umur** (lihat kolom `icName`/`robloxUsername`/`age` di tab `Teachers`, bagian setup Google Sheets di bawah). Contoh akun demo Guru:
+
+| Nama IC | Roblox Username | Umur |
+|---|---|---|
+| Kuzo Yamakage | KuzoYamakageRBLX | 31 |
+
+Status yang tampil untuk akun Guru/Coach setelah login bukan status keanggotaan seperti siswa, melainkan label peran mereka - misalnya `WALI KELAS - CLASS A` (jika kolom `class` di sheet diisi) atau `GURU - SENI RUPA` / `COACH - FIGHTING MECHANICS` (jika tidak terikat satu kelas). Akun Guru/Coach juga tidak pernah kena penguncian fitur (feature lock) seperti siswa berstatus non-ACTIVE - staff selalu dapat akses penuh.
 
 ## Setup Google Sheets (pengelolaan data live)
 
 Setelah setup ini selesai, staff cukup edit Google Sheet - website otomatis sinkron dalam ±60 detik tanpa perlu redeploy atau sentuh kode.
 
-### 1. Buat spreadsheet dengan 11 tab
+### 1. Buat spreadsheet dengan 14 tab
 
 Buat satu Google Sheet baru, lalu buat tab (nama harus **persis**, case-sensitive):
 
@@ -48,6 +58,9 @@ Buat satu Google Sheet baru, lalu buat tab (nama harus **persis**, case-sensitiv
 - `Announcements`
 - `Facilities`
 - `Media`
+- `Staff`
+- `WhitelistJobs`
+- `Extracurriculars`
 
 Struktur kolom tiap tab ada di bagian 2 dan 3 di bawah - buat header-nya persis seperti itu di baris pertama tiap tab.
 
@@ -69,14 +82,19 @@ Setiap tab kelas berisi **dua jenis baris sekaligus**, dibedakan lewat kolom `ro
 | `waliKelas` | Nama wali kelas *(CLASS_INFO saja)* | Menunggu Penunjukan Wali Kelas |
 | `akses` | Info akses kelas *(CLASS_INFO saja)* | Menunggu Pengumuman Discord |
 | `discordUrl` | Link Discord kelas *(CLASS_INFO saja, boleh kosong)* | https://discord.gg/... |
+| `crewPhotoUrl` | Foto kru kelas untuk section "CLASS CREW" di halaman Class Directory *(CLASS_INFO saja, opsional)* | https://.../class-a.jpg |
+| `crewNickname` | Julukan warna/identitas kelas, ditampilkan di bawah label "CLASS X" *(CLASS_INFO saja, opsional)* | Red |
+| `crewLore` | Paragraf cerita/lore kelas untuk section "CLASS CREW" *(CLASS_INFO saja, opsional)* | Class A adalah Angkatan Pertama... |
 
 Contoh isi tab `ClassA`:
 
-| rowType | id | icName | robloxUsername | discordUsername | age | status | description | classStatus | waliKelas | akses | discordUrl |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| CLASS_INFO | class-a | | | | | | RUANG KELAS SEDANG DALAM PERSIAPAN ANGKATAN | LOCKED | (nama wali kelas) | Menunggu Pengumuman Discord | https://discord.gg/... |
-| STUDENT | KHS001 | Ren Kurosawa | RenKurosawaRBLX | renkurosawa | 17 | ACTIVE | | | | | |
-| STUDENT | KHS007 | Kenji Watanabe | KenjiWatanabeRBLX | kenjiwatanabe | 18 | SUSPENDED | | | | | |
+| rowType | id | icName | robloxUsername | discordUsername | age | status | description | classStatus | waliKelas | akses | discordUrl | crewPhotoUrl | crewNickname | crewLore |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| CLASS_INFO | class-a | | | | | | RUANG KELAS SEDANG DALAM PERSIAPAN ANGKATAN | LOCKED | (nama wali kelas) | Menunggu Pengumuman Discord | https://discord.gg/... | https://.../class-a.jpg | Red | Class A adalah Angkatan Pertama KISHIN HIGH SCHOOL... |
+| STUDENT | KHS001 | Ren Kurosawa | RenKurosawaRBLX | renkurosawa | 17 | ACTIVE | | | | | | | | |
+| STUDENT | KHS007 | Kenji Watanabe | KenjiWatanabeRBLX | kenjiwatanabe | 18 | SUSPENDED | | | | | | | | |
+
+Section "CLASS CREW" di halaman Class Directory hanya menampilkan kartu untuk kelas yang kolom `crewLore`-nya diisi - kosongkan ketiga kolom itu (seperti pada `ClassInternational`) kalau kelas tsb tidak perlu tampil di section ini.
 
 Penting: **`status`** (kolom ke-7) selalu berarti status SISWA (ACTIVE/SUSPENDED/dst); **`classStatus`** selalu berarti status KELAS (LOCKED/RESTRICTED/OPEN). Jangan tertukar - keduanya sengaja dipisah jadi dua kolom berbeda supaya tidak bentrok dalam satu tab.
 
@@ -85,10 +103,69 @@ Penting: **`status`** (kolom ke-7) selalu berarti status SISWA (ACTIVE/SUSPENDED
 | Tab | Kolom |
 |---|---|
 | `SpecialClassrooms` | `id, name, status, discordUrl` |
-| `Teachers` | `id, name, subject, role` |
+| `Teachers` | `id, name, subject, role, icName, robloxUsername, discordUsername, age, class, status` |
 | `Announcements` | `id, title, category, date, content` |
 | `Facilities` | `id, name, icon, category, description, status` |
 | `Media` | `logo, loginBg1, loginBg2, loginBg3, loginBg4, loginBg5, loginBg6` |
+| `Staff` | `rowType, id, name, roleLabel, description, photoUrl` |
+| `WhitelistJobs` | `id, name, description, photoUrl, buttonLabel, buttonUrl, accent` |
+| `Extracurriculars` | `id, name, icon, description, photoUrl` |
+
+Contoh isi tab `Teachers`:
+
+| id | name | subject | role | icName | robloxUsername | discordUsername | age | class | status |
+|---|---|---|---|---|---|---|---|---|---|
+| t2 | Kuzo Yamakage | SENI RUPA | TEACHER | Kuzo Yamakage | KuzoYamakageRBLX | kuzoyamakage | 31 | CLASS A | ACTIVE |
+| c1 | The Monkey | FIGHTING MECHANICS | COACH | The Monkey | TheMonkeyRBLX | themonkey | 25 | | ACTIVE |
+
+Penjelasan kolom login di `Teachers`:
+- `icName`, `robloxUsername`, `age` - dipakai untuk mencocokkan login di portal GURU/COACH (kalau `icName` dikosongkan, otomatis memakai isi kolom `name`).
+- `class` - isi dengan nama kelas (`CLASS A`, dst) **hanya kalau** guru tsb adalah wali kelas dari kelas itu. Kosongkan untuk guru mata pelajaran umum / coach yang tidak terikat satu kelas.
+- `status` di tab ini **bukan** status keanggotaan seperti siswa - ini saklar akses login: isi `ACTIVE` supaya bisa login, atau `INACTIVE` untuk memblokir login staff tsb (misalnya sudah tidak aktif) tanpa perlu menghapus datanya.
+
+Tab `Staff` menampilkan section "KAICHOU (BOSS / KEPALA SEKOLAH)" dan "PROFIL SENSEI" di halaman School Information. Sama seperti tab Class, tab ini berisi **beberapa jenis baris sekaligus**, dibedakan lewat kolom `rowType`:
+
+| Kolom | Dipakai untuk | Contoh |
+|---|---|---|
+| `rowType` | Penanda jenis baris - **wajib diisi** | `KAICHOU`, `SENSEI_GROUP`, atau `SENSEI` |
+| `id` | ID unik | `kaichou` / `sensei-rx-king` |
+| `name` | Nama. Untuk baris `SENSEI`, isi nama polos saja (**tanpa** kata "Sensei") - website otomatis menambahkan prefix "Sensei " di depannya | `Boy Habibi` / `RX King` |
+| `roleLabel` | Untuk `KAICHOU`/`SENSEI_GROUP`: teks badge kecil di pojok foto. Untuk `SENSEI`: subjudul berwarna merah di bawah nama | `KAICHOU` / `SENSEI` / `Wali Class A` |
+| `description` | Paragraf/kalimat deskripsi di bawah nama | (lihat contoh) |
+| `photoUrl` | Link foto langsung (sama aturannya seperti kolom media di tab `Media` - lihat bagian di bawah) | https://.../foto.jpg |
+
+Contoh isi tab `Staff`:
+
+| rowType | id | name | roleLabel | description | photoUrl |
+|---|---|---|---|---|---|
+| KAICHOU | kaichou | Boy Habibi | KAICHOU | Kaichou adalah pemegang otoritas tertinggi di Kishin High School... | https://.../kaichou.jpg |
+| SENSEI_GROUP | sensei-group | Sensei khs | SENSEI | Sensei bukanlah seorang guru biasa... | https://.../sensei-group.jpg |
+| SENSEI | sensei-rx-king | RX King | Wali Class A | Tegas, strategis, dan selalu tenang. | https://.../rxking.jpg |
+| SENSEI | sensei-puther-marino | Puther Marino | Wali Class B | Elegan, tajam, dan penuh rasa ingin tahu. | https://.../puther.jpg |
+
+Baris `KAICHOU` dan `SENSEI_GROUP` masing-masing **cukup satu baris saja** (jadi dua kartu besar di bagian atas); baris `SENSEI` boleh sebanyak apapun (satu baris = satu kartu di grid "Profil Sensei"). Kalau `photoUrl` dikosongkan, kartu menampilkan placeholder ikon - situs tetap jalan normal.
+
+Tab `WhitelistJobs` menampilkan section "WHITELIST JOBS" di halaman School Information (kartu peran seperti Hoken-Shitsu, Yasha, dst dengan tombol "Pilih peran"). Satu baris = satu kartu, boleh sebanyak apapun.
+
+| Kolom | Dipakai untuk | Contoh |
+|---|---|---|
+| `id` | ID unik | `hoken-shitsu` |
+| `name` | Nama peran | Hoken-Shitsu |
+| `description` | Deskripsi peran | Hoken-shitsu adalah pusat kesehatan... |
+| `photoUrl` | Link foto langsung (aturan sama seperti tab `Media`) | https://.../hoken-shitsu.jpg |
+| `buttonLabel` | Teks tombol - kosongkan untuk pakai default "Pilih peran" | Pilih peran |
+| `buttonUrl` | Link tujuan tombol (channel Discord pendaftaran peran, dst) - kosongkan untuk pakai link invite default | https://discord.com/channels/... |
+| `accent` | Warna tombol "Pilih peran". Pilihan yang valid: `red`, `gold`, `blue`, `purple`, `green`, `gray`. Kosong atau nilai lain di luar itu otomatis jadi `gold` | red |
+
+Tab `Extracurriculars` menampilkan section "EKSTRAKURIKULER" di halaman School Information (kartu ikon seperti Karate, Music, Catur, dst). Satu baris = satu kartu, boleh sebanyak apapun.
+
+| Kolom | Dipakai untuk | Contoh |
+|---|---|---|
+| `id` | ID unik | `karate` |
+| `name` | Nama ekstrakurikuler | KARATE |
+| `icon` | Key ikon - salah satu dari: `swords`, `music`, `puzzle`, `palette`, `trees`, `heart-pulse`, `languages`, `book-open-text`, `circle-dot`. Kosong/tidak dikenal otomatis pakai ikon bintang | swords |
+| `description` | Deskripsi singkat satu kalimat | Melatih kedisiplinan, ketangkasan, keberanian, dan sportivitas. |
+| `photoUrl` | Link foto langsung (opsional, aturan sama seperti tab `Media`). Kalau diisi, kartu menampilkan foto tsb (dengan ikon kecil di pojok) menggantikan tampilan kotak ikon polos | https://.../karate.jpg |
 
 Tab `Media` cuma berisi **satu baris data** (satu "profil media" untuk seluruh situs):
 
@@ -105,7 +182,9 @@ Catatan umum:
 - Baris `STUDENT` di tab kelas: `class`-nya otomatis mengikuti tab (tidak perlu kolom `class` terpisah).
 - `status` STUDENT: `ACTIVE`, `INACTIVE`, `SUSPENDED`, atau `GRADUATED`.
 - `role` Teachers: `TEACHER` atau `COACH`.
-- `icon` Facilities pakai salah satu key: `swords`, `utensils`, `store`, `circle-dot`, `volleyball`, `book-open`, `landmark`, `building-2`.
+- `status` Teachers: `ACTIVE` (bisa login) atau `INACTIVE` (login diblokir).
+- `name` pada baris `SENSEI` di tab Staff ditulis polos tanpa kata "Sensei" di depannya - website yang menambahkan otomatis.
+- `icon` Facilities pakai salah satu key: `swords`, `utensils`, `store`, `circle-dot`, `volleyball`, `book-open`, `landmark`, `building-2`, `coffee`, `skull`, `mic`, `dumbbell`.
 - Kolom `discordUrl` boleh dikosongkan - otomatis pakai link invite default (`src/data/classes.ts` → `DISCORD_INVITE`).
 - Baris pertama tiap tab harus header (nama kolom), bukan data.
 
@@ -139,6 +218,9 @@ export const SHEET_CSV_URLS: Record<SheetTab, string> = {
   announcements: "...",
   facilities: "...",
   media: "...",
+  staff: "...",
+  whitelistJobs: "...",
+  extracurriculars: "...",
 };
 ```
 

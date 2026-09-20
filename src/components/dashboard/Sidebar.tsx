@@ -25,7 +25,7 @@ import { FeatureKey, getLockedFeatures } from "@/lib/permissions";
 
 const navItems: { href: string; label: string; icon: React.ElementType; feature?: FeatureKey }[] = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/profile", label: "Student Profile", icon: User },
+  { href: "/profile", label: "Profile", icon: User },
   { href: "/school-information", label: "School Information", icon: Landmark },
   { href: "/rules", label: "School Rules", icon: ScrollText },
   { href: "/curriculum", label: "Curriculum", icon: BookOpen },
@@ -45,8 +45,8 @@ interface SidebarProps {
 export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { student, logout } = useAuth();
-  const lockedFeatures = student ? getLockedFeatures(student.status) : [];
+  const { user, logout } = useAuth();
+  const lockedFeatures = user && user.role === "STUDENT" ? getLockedFeatures(user.status) : [];
 
   const handleLogout = () => {
     logout();

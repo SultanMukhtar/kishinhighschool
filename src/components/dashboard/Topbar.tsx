@@ -1,16 +1,16 @@
 "use client";
 
 import { Menu, User } from "lucide-react";
-import { Student } from "@/data/students";
+import { AuthUser } from "@/lib/auth";
 import ThemeToggle from "@/components/ThemeToggle";
 
 interface TopbarProps {
-  student: Student;
+  user: AuthUser;
   onMenuClick: () => void;
   title?: string;
 }
 
-export default function Topbar({ student, onMenuClick, title }: TopbarProps) {
+export default function Topbar({ user, onMenuClick, title }: TopbarProps) {
   return (
     <header className="glass-panel sticky top-0 z-20 flex items-center gap-4 border-b border-kishin-line/8 px-4 py-4 sm:px-6">
       <button
@@ -34,8 +34,10 @@ export default function Topbar({ student, onMenuClick, title }: TopbarProps) {
           <User className="h-4 w-4" />
         </div>
         <div className="hidden text-left sm:block">
-          <p className="text-xs font-semibold leading-tight text-kishin-white">{student.icName}</p>
-          <p className="text-[10px] leading-tight text-kishin-gray">{student.class}</p>
+          <p className="text-xs font-semibold leading-tight text-kishin-white">{user.icName}</p>
+          <p className="text-[10px] leading-tight text-kishin-gray">
+            {user.role === "STUDENT" ? user.class : user.subject || user.class}
+          </p>
         </div>
       </div>
     </header>

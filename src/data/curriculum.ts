@@ -3,15 +3,59 @@ export interface CurriculumSubject {
   subject: string;
   teacher: string;
   icon: string;
+  discordUrl: string;
 }
 
 export const curriculumSubjects: CurriculumSubject[] = [
-  { id: "tata-boga", subject: "TATA BOGA", teacher: "Audrey", icon: "chef-hat" },
-  { id: "seni-rupa", subject: "SENI RUPA", teacher: "Kuzo Yamakage", icon: "palette" },
-  { id: "film", subject: "SENI FILM, TELEVISI DAN KONTEN", teacher: "Edgard Kiss", icon: "clapperboard" },
-  { id: "bk", subject: "BIMBINGAN KONSELING", teacher: "Sora Star", icon: "heart-handshake" },
-  { id: "design", subject: "DESIGN", teacher: "Toby Franco / Boy Habibi", icon: "pen-tool" },
-  { id: "musik", subject: "SENI MUSIK", teacher: "Selena Gomez", icon: "music" },
+  {
+    id: "tata-boga",
+    subject: "TATA BOGA",
+    teacher: "Audrey",
+    icon: "chef-hat",
+    discordUrl: "https://discord.gg/rGFdf3MJy",
+  },
+  {
+    id: "seni-rupa",
+    subject: "SENI RUPA",
+    teacher: "Kuzo Yamakage",
+    icon: "palette",
+    discordUrl: "https://discord.gg/u8pJUy5tE",
+  },
+  {
+    id: "film",
+    subject: "SENI FILM, TELEVISI DAN KONTEN",
+    teacher: "Edgard Kiss",
+    icon: "clapperboard",
+    discordUrl: "https://discord.gg/HSdWXWg6g",
+  },
+  {
+    id: "bk",
+    subject: "BIMBINGAN KONSELING",
+    teacher: "Sora Star",
+    icon: "heart-handshake",
+    discordUrl: "https://discord.gg/46fuUUGxe",
+  },
+  {
+    id: "design",
+    subject: "DESIGN",
+    teacher: "Toby Franco / Boy Habibi",
+    icon: "pen-tool",
+    discordUrl: "https://discord.gg/EmfDdyXcT",
+  },
+  {
+    id: "musik",
+    subject: "SENI MUSIK",
+    teacher: "Selena Gomez",
+    icon: "music",
+    discordUrl: "https://discord.gg/xFx4W7QcD",
+  },
+  {
+    id: "inggris",
+    subject: "INGGRIS",
+    teacher: "Metalita Grant",
+    icon: "languages",
+    discordUrl: "https://discord.gg/nxC7pUnRc",
+  },
 ];
 
 export const curriculumSchedule = {

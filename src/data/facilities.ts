@@ -66,6 +66,38 @@ export const fallbackFacilities: Facility[] = [
     description: "Kantor kepala sekolah dan pusat administrasi Kishin High School.",
     status: "RESTRICTED",
   },
+  {
+    id: "maid-cafe",
+    name: "Maid Cafe",
+    icon: "coffee",
+    category: "CAFE",
+    description: "Kafe bertema maid tempat siswa dapat bersantai, mengobrol, dan menikmati waktu istirahat.",
+    status: "AVAILABLE",
+  },
+  {
+    id: "club-akuma",
+    name: "Club Akuma",
+    icon: "skull",
+    category: "CLUB",
+    description: "Klub eksklusif dengan aura gelap dan misterius, tempat berkumpulnya kelompok tertentu di lingkungan sekolah.",
+    status: "RESTRICTED",
+  },
+  {
+    id: "karaoke-center",
+    name: "Karaoke Center",
+    icon: "mic",
+    category: "ENTERTAINMENT",
+    description: "Tempat siswa berkumpul untuk bernyanyi dan bersantai bersama teman-teman di luar jam pelajaran.",
+    status: "AVAILABLE",
+  },
+  {
+    id: "gymnasium",
+    name: "Gymnasium",
+    icon: "dumbbell",
+    category: "SPORTS",
+    description: "Ruang kebugaran dan latihan fisik untuk menunjang stamina serta kekuatan siswa.",
+    status: "AVAILABLE",
+  },
 ];
 
 export function mapFacilityRow(row: SheetRow): Facility | null {

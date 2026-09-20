@@ -29,33 +29,40 @@ export type SheetTab =
   | "teachers"
   | "announcements"
   | "facilities"
-  | "media";
-
-const PLACEHOLDER = "PASTE_PUBLISHED_CSV_LINK_HERE";
+  | "media"
+  | "staff"
+  | "whitelistJobs"
+  | "extracurriculars";
 
 export const SHEET_CSV_URLS: Record<SheetTab, string> = {
   classA:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1590093497&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=889376678&single=true&output=csv",
   classB:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1710819978&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1864864172&single=true&output=csv",
   classC:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=274334887&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1554643009&single=true&output=csv",
   classD:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=2056553727&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=2089419120&single=true&output=csv",
   classE:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1546785422&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=998236903&single=true&output=csv",
   classInternational:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1624107404&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=848784900&single=true&output=csv",
   specialClassrooms:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1767731359&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=99288051&single=true&output=csv",
   teachers:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=415863703&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=2082896047&single=true&output=csv",
   announcements:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=142301150&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=2047382339&single=true&output=csv",
   facilities:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=487067856&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1885327168&single=true&output=csv",
   media:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=671201318&single=true&output=csv",
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1011940383&single=true&output=csv",
+  staff:
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1931358583&single=true&output=csv",
+  whitelistJobs:
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=1864147331&single=true&output=csv",
+  extracurriculars:
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSI54o6njZhFbfxIACxe0xDdQgMe766uH_xT1WlLstAMkKfPwHzI9Qmatcz240-Uk611wa8JugyKxfK/pub?gid=225290689&single=true&output=csv",
 };
 
 /** Seberapa lama (detik) data sheet di-cache sebelum diambil ulang. */

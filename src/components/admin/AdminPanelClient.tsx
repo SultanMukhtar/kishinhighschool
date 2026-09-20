@@ -17,6 +17,9 @@ import {
   Layers,
   Image as ImageIcon,
   LogOut,
+  Crown,
+  Briefcase,
+  Sparkles,
 } from "lucide-react";
 import { Student } from "@/data/students";
 import { SpecialClassroom } from "@/data/classes";
@@ -25,12 +28,24 @@ import { Teacher } from "@/data/teachers";
 import { Announcement } from "@/data/announcements";
 import { Facility } from "@/data/facilities";
 import type { MediaResult } from "@/data/media.server";
+import { StaffMember } from "@/data/staff";
+import { WhitelistJob } from "@/data/whitelistJobs";
+import { Extracurricular } from "@/data/extracurriculars";
 import { SheetResult, SheetSource } from "@/lib/sheets";
 import StatusBadge from "@/components/ui/StatusBadge";
 import KishinLogo from "@/components/KishinLogo";
 import ThemeToggle from "@/components/ThemeToggle";
 
-type Tab = "students" | "classes" | "teachers" | "announcements" | "facilities" | "media";
+type Tab =
+  | "students"
+  | "classes"
+  | "teachers"
+  | "announcements"
+  | "facilities"
+  | "media"
+  | "staff"
+  | "whitelistJobs"
+  | "extracurriculars";
 
 interface AdminPanelClientProps {
   students: SheetResult<Student>;
@@ -40,6 +55,9 @@ interface AdminPanelClientProps {
   announcements: SheetResult<Announcement>;
   facilities: SheetResult<Facility>;
   media: MediaResult;
+  staff: SheetResult<StaffMember>;
+  whitelistJobs: SheetResult<WhitelistJob>;
+  extracurriculars: SheetResult<Extracurricular>;
 }
 
 const SOURCE_META: Record<SheetSource, { icon: React.ElementType; label: string; classes: string }> = {
@@ -93,6 +111,9 @@ export default function AdminPanelClient({
   announcements: announcementsResult,
   facilities: facilitiesResult,
   media: mediaResult,
+  staff: staffResult,
+  whitelistJobs: whitelistJobsResult,
+  extracurriculars: extracurricularsResult,
 }: AdminPanelClientProps) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("students");
@@ -119,6 +140,19 @@ export default function AdminPanelClient({
     },
     { id: "facilities", label: "Facility List", icon: Building2, source: facilitiesResult.source },
     { id: "media", label: "Media", icon: ImageIcon, source: mediaResult.source },
+    { id: "staff", label: "Kaichou & Sensei", icon: Crown, source: staffResult.source },
+    {
+      id: "whitelistJobs",
+      label: "Whitelist Jobs",
+      icon: Briefcase,
+      source: whitelistJobsResult.source,
+    },
+    {
+      id: "extracurriculars",
+      label: "Ekstrakurikuler",
+      icon: Sparkles,
+      source: extracurricularsResult.source,
+    },
   ];
 
   const activeTab = tabs.find((t) => t.id === tab)!;
@@ -251,6 +285,11 @@ export default function AdminPanelClient({
                   <p className="mt-3 text-xs leading-relaxed text-kishin-gray">
                     Wali Kelas: {c.waliKelas}
                   </p>
+                  {c.crewNickname && (
+                    <p className="mt-1 text-xs leading-relaxed text-kishin-gray">
+                      Crew Nickname: {c.crewNickname}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
@@ -274,12 +313,14 @@ export default function AdminPanelClient({
 
         {tab === "teachers" && (
           <div className="glass-card overflow-x-auto rounded-2xl">
-            <table className="w-full min-w-[560px] text-left text-sm">
+            <table className="w-full min-w-[720px] text-left text-sm">
               <thead>
                 <tr className="border-b border-kishin-line/8 text-[10px] tracking-[0.15em] text-kishin-gray">
                   <th className="px-5 py-4">NAME</th>
                   <th className="px-5 py-4">SUBJECT / MATERI</th>
                   <th className="px-5 py-4">ROLE</th>
+                  <th className="px-5 py-4">WALI KELAS</th>
+                  <th className="px-5 py-4">LOGIN STATUS</th>
                 </tr>
               </thead>
               <tbody>
@@ -289,6 +330,10 @@ export default function AdminPanelClient({
                     <td className="px-5 py-4 text-kishin-gray">{t.subject}</td>
                     <td className="px-5 py-4">
                       <StatusBadge status={t.role} variant="neutral" />
+                    </td>
+                    <td className="px-5 py-4 text-kishin-gray">{t.class || "-"}</td>
+                    <td className="px-5 py-4">
+                      <StatusBadge status={t.status} />
                     </td>
                   </tr>
                 ))}
@@ -371,6 +416,127 @@ export default function AdminPanelClient({
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {tab === "staff" && (
+          <div className="flex flex-col gap-8">
+            <div>
+              <h3 className="mb-3 text-xs font-bold tracking-[0.2em] text-kishin-gray">
+                KAICHOU & SENSEI GROUP
+              </h3>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {staffResult.data
+                  .filter((s) => s.rowType === "KAICHOU" || s.rowType === "SENSEI_GROUP")
+                  .map((s) => (
+                    <div key={s.id} className="glass-card overflow-hidden rounded-xl">
+                      <div className="flex aspect-video items-center justify-center bg-kishin-inset/40">
+                        {s.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={s.photoUrl} alt={s.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="text-[10px] tracking-[0.15em] text-kishin-gray/60">
+                            FOTO BELUM DIATUR
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <StatusBadge status={s.roleLabel} variant="neutral" />
+                        <h3 className="mt-2 text-sm font-semibold text-kishin-white">{s.name}</h3>
+                        <p className="mt-1 text-xs leading-relaxed text-kishin-gray">
+                          {s.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="mb-3 text-xs font-bold tracking-[0.2em] text-kishin-gray">
+                PROFIL SENSEI ({staffResult.data.filter((s) => s.rowType === "SENSEI").length})
+              </h3>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {staffResult.data
+                  .filter((s) => s.rowType === "SENSEI")
+                  .map((s) => (
+                    <div key={s.id} className="glass-card overflow-hidden rounded-xl">
+                      <div className="flex aspect-[3/4] items-center justify-center bg-kishin-inset/40">
+                        {s.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={s.photoUrl} alt={s.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="text-[10px] tracking-[0.15em] text-kishin-gray/60">
+                            FOTO BELUM DIATUR
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-sm font-semibold text-kishin-white">Sensei {s.name}</h3>
+                        <p className="mt-0.5 text-xs font-bold text-kishin-redlight">{s.roleLabel}</p>
+                        <p className="mt-2 text-xs leading-relaxed text-kishin-gray">
+                          {s.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === "whitelistJobs" && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {whitelistJobsResult.data.map((j) => (
+              <div key={j.id} className="glass-card overflow-hidden rounded-xl">
+                <div className="flex aspect-video items-center justify-center bg-kishin-inset/40">
+                  {j.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={j.photoUrl} alt={j.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="text-[10px] tracking-[0.15em] text-kishin-gray/60">
+                      FOTO BELUM DIATUR
+                    </span>
+                  )}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-sm font-semibold text-kishin-white">{j.name}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-kishin-gray">{j.description}</p>
+                  <div className="mt-2 flex items-center gap-2">
+                    <StatusBadge status={j.accent.toUpperCase()} variant="neutral" />
+                    <span className="truncate text-[10px] text-kishin-gray">{j.buttonUrl}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === "extracurriculars" && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {extracurricularsResult.data.map((e) => (
+              <div key={e.id} className="glass-card overflow-hidden rounded-xl">
+                <div className="flex aspect-video items-center justify-center bg-kishin-inset/40">
+                  {e.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={e.photoUrl} alt={e.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="text-[10px] tracking-[0.15em] text-kishin-gray/60">
+                      FOTO BELUM DIATUR - PAKAI IKON
+                    </span>
+                  )}
+                </div>
+                <div className="p-5">
+                  <h3 className="font-display text-lg tracking-[0.04em] text-kishin-white">
+                    {e.name}
+                  </h3>
+                  <p className="mt-1 text-[10px] font-bold tracking-[0.2em] text-kishin-red">
+                    {e.icon}
+                  </p>
+                  <p className="mt-2 text-xs leading-relaxed text-kishin-gray">{e.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </main>

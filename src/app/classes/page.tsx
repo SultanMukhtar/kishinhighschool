@@ -2,6 +2,7 @@ import { GraduationCap } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
 import ClassGrid from "@/components/classes/ClassGrid";
+import ClassCrewSection from "@/components/classes/ClassCrewSection";
 import { getClasses, getSpecialClassrooms } from "@/data/classes.server";
 
 export default async function ClassesPage() {
@@ -12,6 +13,8 @@ export default async function ClassesPage() {
 
   return (
     <AppShell title="Class Directory" feature="classes">
+      <ClassCrewSection classes={classes} />
+
       <PageHeader
         eyebrow="ACADEMIC DIVISION"
         title="CLASS DIRECTORY"

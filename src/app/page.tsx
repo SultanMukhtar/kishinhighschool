@@ -11,7 +11,7 @@ const BOOT_DURATION_MS = 1100;
 
 export default function HomePage() {
   const [booting, setBooting] = useState(true);
-  const { student, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,11 +28,11 @@ export default function HomePage() {
 
   useEffect(() => {
     // Returning users with a session skip the welcome screen entirely.
-    if (booting || isLoading || !student) return;
+    if (booting || isLoading || !user) return;
     router.replace("/dashboard");
-  }, [booting, isLoading, student, router]);
+  }, [booting, isLoading, user, router]);
 
-  const showWelcome = !booting && !isLoading && !student;
+  const showWelcome = !booting && !isLoading && !user;
 
   return (
     <main className="relative min-h-screen w-full bg-kishin-black">

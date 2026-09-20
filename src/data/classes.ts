@@ -13,6 +13,11 @@ export interface SchoolClass {
   waliKelas: string;
   akses: string;
   discordUrl: string;
+  /** "Class Crew" lore section (Class Directory page) - all optional, a
+   *  class with no crewLore simply doesn't get a crew card. */
+  crewPhotoUrl: string;
+  crewNickname: string;
+  crewLore: string;
 }
 
 /**
@@ -40,6 +45,10 @@ export const fallbackClasses: SchoolClass[] = [
     waliKelas: "Menunggu Penunjukan Wali Kelas",
     akses: "Menunggu Pengumuman Discord",
     discordUrl: DISCORD_INVITE,
+    crewPhotoUrl: "",
+    crewNickname: "Red",
+    crewLore:
+      "Class A adalah Angkatan Pertama KISHIN HIGH SCHOOL, generasi yang menjadi awal berdirinya nama dan reputasi sekolah. Sejak hari pertama, mereka bukan sekadar murid - mereka adalah kelompok yang membentuk aturan, tradisi, serta harga diri sekolah. Nama mereka begitu disegani hingga setiap angkatan.",
   },
   {
     id: "class-b",
@@ -49,6 +58,10 @@ export const fallbackClasses: SchoolClass[] = [
     waliKelas: "Menunggu Penunjukan Wali Kelas",
     akses: "Menunggu Pengumuman Discord",
     discordUrl: DISCORD_INVITE,
+    crewPhotoUrl: "",
+    crewNickname: "White",
+    crewLore:
+      "Class B bukan sekadar kelas. Kami adalah keluarga yang terbentuk dari kekacauan, persahabatan, dan loyalitas. Dan sekarang... kalau satu orang bergerak, semuanya ikut bergerak.",
   },
   {
     id: "class-c",
@@ -58,6 +71,10 @@ export const fallbackClasses: SchoolClass[] = [
     waliKelas: "Menunggu Penunjukan Wali Kelas",
     akses: "Menunggu Pengumuman Discord",
     discordUrl: DISCORD_INVITE,
+    crewPhotoUrl: "",
+    crewNickname: "Purple",
+    crewLore:
+      "Class C awalnya hanyalah kumpulan murid yang tidak sengaja disatukan oleh pihak sekolah. Mereka berasal dari latar belakang, kelompok, dan sifat yang berbeda-beda - tidak pernah berniat menjadi satu kelompok. Namun, sekolah segera menyadari satu hal: hampir setiap murid di kelas ini memiliki kemampuan bertarung dan mental yang jauh di atas murid biasa.",
   },
   {
     id: "class-d",
@@ -67,6 +84,10 @@ export const fallbackClasses: SchoolClass[] = [
     waliKelas: "Menunggu Penunjukan Wali Kelas",
     akses: "Menunggu Pengumuman Discord",
     discordUrl: DISCORD_INVITE,
+    crewPhotoUrl: "",
+    crewNickname: "Blue",
+    crewLore:
+      "Class D dikenal sebagai kelas yang paling sulit diatur di sekolah. Mereka sering melanggar aturan, membuat keributan, dan tidak pernah takut berhadapan dengan murid lain. Namun di balik sifat mereka yang brutal dan keras kepala, setiap anggota Class D memiliki kekuatan bertarung yang luar biasa. Mereka mungkin tidak disiplin, tetapi ketika terjadi masalah, mereka adalah salah satu kelas yang paling berbahaya.",
   },
   {
     id: "class-e",
@@ -76,6 +97,10 @@ export const fallbackClasses: SchoolClass[] = [
     waliKelas: "Menunggu Penunjukan Ketua Class",
     akses: "Menunggu Pengumuman Discord",
     discordUrl: DISCORD_INVITE,
+    crewPhotoUrl: "",
+    crewNickname: "Gray",
+    crewLore:
+      "Class E adalah kelas terbaru dan berada di urutan paling terakhir di sekolah. Awalnya, banyak murid menganggap mereka sebagai kelas yang lemah dan tidak pantas diperhitungkan. Namun Class E justru memiliki satu hal yang tidak dimiliki kelas lain: mereka tidak takut kepada siapa pun.",
   },
   {
     id: "class-international",
@@ -85,6 +110,9 @@ export const fallbackClasses: SchoolClass[] = [
     waliKelas: "Menunggu Penunjukan Wali Kelas",
     akses: "Menunggu Pengumuman Discord",
     discordUrl: DISCORD_INVITE,
+    crewPhotoUrl: "",
+    crewNickname: "",
+    crewLore: "",
   },
 ];
 
@@ -119,6 +147,9 @@ export function mapClassRow(row: SheetRow, className: string): SchoolClass {
     waliKelas: row.waliKelas?.trim() || "Menunggu Penunjukan Wali Kelas",
     akses: row.akses?.trim() || "Menunggu Pengumuman Discord",
     discordUrl: row.discordUrl?.trim() || DISCORD_INVITE,
+    crewPhotoUrl: row.crewPhotoUrl?.trim() || "",
+    crewNickname: row.crewNickname?.trim() || "",
+    crewLore: row.crewLore?.trim() || "",
   };
 }
 

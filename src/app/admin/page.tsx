@@ -6,6 +6,9 @@ import { getTeachers } from "@/data/teachers.server";
 import { getAnnouncements } from "@/data/announcements.server";
 import { getFacilities } from "@/data/facilities.server";
 import { getMedia } from "@/data/media.server";
+import { getStaff } from "@/data/staff.server";
+import { getWhitelistJobs } from "@/data/whitelistJobs.server";
+import { getExtracurriculars } from "@/data/extracurriculars.server";
 import AdminPanelClient from "@/components/admin/AdminPanelClient";
 import AdminAccessGate from "@/components/admin/AdminAccessGate";
 
@@ -17,16 +20,29 @@ export default async function AdminPage() {
     return <AdminAccessGate />;
   }
 
-  const [students, classes, specialClassrooms, teachers, announcements, facilities, media] =
-    await Promise.all([
-      getStudents(),
-      getClasses(),
-      getSpecialClassrooms(),
-      getTeachers(),
-      getAnnouncements(),
-      getFacilities(),
-      getMedia(),
-    ]);
+  const [
+    students,
+    classes,
+    specialClassrooms,
+    teachers,
+    announcements,
+    facilities,
+    media,
+    staff,
+    whitelistJobs,
+    extracurriculars,
+  ] = await Promise.all([
+    getStudents(),
+    getClasses(),
+    getSpecialClassrooms(),
+    getTeachers(),
+    getAnnouncements(),
+    getFacilities(),
+    getMedia(),
+    getStaff(),
+    getWhitelistJobs(),
+    getExtracurriculars(),
+  ]);
 
   return (
     <AdminPanelClient
@@ -37,6 +53,9 @@ export default async function AdminPage() {
       announcements={announcements}
       facilities={facilities}
       media={media}
+      staff={staff}
+      whitelistJobs={whitelistJobs}
+      extracurriculars={extracurriculars}
     />
   );
 }

@@ -6,6 +6,10 @@ import {
   CircleDot,
   BookOpen,
   Landmark,
+  Coffee,
+  Skull,
+  Mic2,
+  Dumbbell,
 } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
@@ -21,6 +25,10 @@ const iconMap: Record<string, React.ElementType> = {
   "book-open": BookOpen,
   landmark: Landmark,
   "building-2": Building2,
+  coffee: Coffee,
+  skull: Skull,
+  mic: Mic2,
+  dumbbell: Dumbbell,
 };
 
 export default async function FacilitiesPage() {

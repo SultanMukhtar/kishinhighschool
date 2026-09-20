@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       colors: {
         // Backed by CSS custom properties in globals.css so the whole
-        // palette re-themes at once via the [data-theme] attribute —
+        // palette re-themes at once via the [data-theme] attribute -
         // see the "THEME TOKENS" block at the top of globals.css.
         kishin: {
           black: "rgb(var(--kishin-black) / <alpha-value>)",
@@ -24,10 +24,10 @@ const config: Config = {
           gray: "rgb(var(--kishin-gray) / <alpha-value>)",
           white: "rgb(var(--kishin-white) / <alpha-value>)",
           gold: "rgb(var(--kishin-gold) / <alpha-value>)",
-          /** Hairline borders / subtle highlight overlays — light-on-dark
+          /** Hairline borders / subtle highlight overlays - light-on-dark
            *  in dark mode, dark-on-light in light mode. */
           line: "rgb(var(--kishin-line) / <alpha-value>)",
-          /** Recessed surface fills (inputs, chips, badges) — same
+          /** Recessed surface fills (inputs, chips, badges) - same
            *  light/dark-flip logic as `line`. */
           inset: "rgb(var(--kishin-inset) / <alpha-value>)",
         },

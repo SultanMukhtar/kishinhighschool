@@ -18,17 +18,17 @@ interface AppShellProps {
 }
 
 export default function AppShell({ children, title, feature }: AppShellProps) {
-  const { student, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !student) {
+    if (!isLoading && !user) {
       router.replace("/login");
     }
-  }, [isLoading, student, router]);
+  }, [isLoading, user, router]);
 
-  if (isLoading || !student) {
+  if (isLoading || !user) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center bg-kishin-black">
         <div className="flex flex-col items-center gap-3">
@@ -39,7 +39,8 @@ export default function AppShell({ children, title, feature }: AppShellProps) {
     );
   }
 
-  const locked = feature ? isFeatureLocked(student.status, feature) : false;
+  // Feature locks only ever apply to students - staff always have full access.
+  const locked = feature && user.role === "STUDENT" ? isFeatureLocked(user.status, feature) : false;
 
   return (
     <div className="relative min-h-screen w-full bg-kishin-black">
@@ -47,14 +48,14 @@ export default function AppShell({ children, title, feature }: AppShellProps) {
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
       <div className="relative flex min-h-screen flex-col lg:pl-72">
-        <Topbar student={student} onMenuClick={() => setMobileOpen(true)} title={title} />
+        <Topbar user={user} onMenuClick={() => setMobileOpen(true)} title={title} />
         <motion.main
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-10"
         >
-          {locked ? <LockedFeatureNotice status={student.status} /> : children}
+          {locked ? <LockedFeatureNotice status={user.status} /> : children}
         </motion.main>
       </div>
     </div>

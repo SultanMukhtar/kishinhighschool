@@ -10,15 +10,15 @@ import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function LoginPage() {
-  const { student, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const { theme } = useTheme();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && student) {
+    if (!isLoading && user) {
       router.replace("/dashboard");
     }
-  }, [isLoading, student, router]);
+  }, [isLoading, user, router]);
 
   return (
     <main className="relative min-h-screen w-full">

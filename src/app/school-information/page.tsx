@@ -3,10 +3,15 @@
 import { Landmark, Target, MessageSquare, ClipboardList, ExternalLink, ShieldAlert } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
+import StaffSection from "@/components/school-info/StaffSection";
+import WhitelistJobsSection from "@/components/school-info/WhitelistJobsSection";
+import ExtracurricularSection from "@/components/school-info/ExtracurricularSection";
 import {
   aboutSchool,
+  backgroundStory,
   discordChannelGuide,
   registrationSteps,
+  schoolMotto,
   systemRules,
   DISCORD_SERVER_URL,
 } from "@/data/school-info";
@@ -19,6 +24,35 @@ export default function SchoolInformationPage() {
         title="SCHOOL INFORMATION"
         icon={<Landmark className="h-5 w-5" />}
       />
+
+      <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="flex flex-col justify-center rounded-2xl bg-[#5c1414] p-8">
+          <p className="text-[11px] font-bold tracking-[0.35em] text-white/80">MOTTO SEKOLAH</p>
+          <p className="mt-4 font-display text-xl leading-snug text-white sm:text-2xl">
+            &ldquo;{schoolMotto}&rdquo;
+          </p>
+          <div className="mt-5 h-1 w-14 rounded-full bg-kishin-gold" />
+        </div>
+        <div className="flex flex-col justify-center">
+          <p className="mb-2 text-[11px] font-bold tracking-[0.35em] text-kishin-red">
+            {backgroundStory.eyebrow}
+          </p>
+          <h2 className="font-display text-2xl tracking-[0.03em] text-kishin-white">
+            {backgroundStory.title}
+          </h2>
+          <div className="mt-3 flex flex-col gap-3">
+            {backgroundStory.paragraphs.map((p, i) => (
+              <p key={i} className="text-sm leading-relaxed text-kishin-gray">
+                {p}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <StaffSection />
+      <WhitelistJobsSection />
+      <ExtracurricularSection />
 
       <div className="glass-card mb-6 rounded-2xl p-6 shadow-red-glow-sm sm:p-8">
         <h2 className="mb-4 font-display text-2xl tracking-[0.05em] text-kishin-white">

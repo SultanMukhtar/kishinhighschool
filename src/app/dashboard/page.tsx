@@ -14,6 +14,7 @@ import {
   Lock,
   ExternalLink,
   User,
+  BookMarked,
 } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import StatusBadge from "@/components/ui/StatusBadge";
@@ -36,10 +37,14 @@ const quickLinks: { href: string; label: string; icon: React.ElementType; featur
 ];
 
 export default function DashboardPage() {
-  const { student } = useAuth();
+  const { user } = useAuth();
   const [announcements, setAnnouncements] = useState<Announcement[]>(fallbackAnnouncements);
   const [ownClass, setOwnClass] = useState<SchoolClass | null>(null);
   const [classLoading, setClassLoading] = useState(true);
+
+  const isStudent = user?.role === "STUDENT";
+  const hasHomeroom = !!user && user.class && user.class !== "SEMUA KELAS";
+  const showClassSection = isStudent || hasHomeroom;
 
   useEffect(() => {
     let cancelled = false;
@@ -56,7 +61,10 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    if (!student) return;
+    if (!user || !showClassSection) {
+      setClassLoading(false);
+      return;
+    }
     let cancelled = false;
     fetch("/api/classes", { cache: "no-store" })
       .then((res) => res.json())
@@ -64,7 +72,7 @@ export default function DashboardPage() {
         if (cancelled) return;
         const classes: SchoolClass[] = Array.isArray(json?.data) ? json.data : [];
         const match = classes.find(
-          (c) => c.name.trim().toUpperCase() === student.class.trim().toUpperCase()
+          (c) => c.name.trim().toUpperCase() === user.class.trim().toUpperCase()
         );
         setOwnClass(match ?? null);
       })
@@ -75,11 +83,12 @@ export default function DashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [student]);
+  }, [user, showClassSection]);
 
-  if (!student) return <AppShell>{null}</AppShell>;
+  if (!user) return <AppShell>{null}</AppShell>;
 
-  const lockedFeatures = getLockedFeatures(student.status);
+  const lockedFeatures = isStudent ? getLockedFeatures(user.status) : [];
+  const identityTitle = isStudent ? "STUDENT IDENTITY" : user.role === "COACH" ? "COACH IDENTITY" : "TEACHER IDENTITY";
 
   return (
     <AppShell title="Dashboard">
@@ -88,19 +97,19 @@ export default function DashboardPage() {
           SELAMAT DATANG DI KISHIN HIGH SCHOOL
         </p>
         <h1 className="font-display text-3xl tracking-[0.06em] text-kishin-white sm:text-4xl">
-          Welcome, {student.icName}
+          Welcome, {user.icName}
         </h1>
         <p className="mt-2 text-sm text-kishin-gray">
           Portal pengelolaan sekolah virtual untuk server Gakuran Roleplay.
         </p>
       </div>
 
-      {lockedFeatures.length > 0 && (
+      {isStudent && lockedFeatures.length > 0 && (
         <div className="glass-card mb-8 flex items-start gap-3 rounded-xl border border-amber-500/25 bg-amber-500/5 p-4">
           <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
           <p className="text-xs leading-relaxed text-amber-800/80 dark:text-amber-200/80">
             Status keanggotaan Anda saat ini adalah{" "}
-            <span className="font-bold text-amber-800 dark:text-amber-200">{student.status}</span>, sehingga beberapa
+            <span className="font-bold text-amber-800 dark:text-amber-200">{user.status}</span>, sehingga beberapa
             fitur (ditandai ikon gembok di sidebar) sedang tidak dapat diakses.
           </p>
         </div>
@@ -112,20 +121,24 @@ export default function DashboardPage() {
           <div className="mb-5 flex items-center gap-2">
             <IdCard className="h-5 w-5 text-kishin-red" />
             <h2 className="font-display text-xl tracking-[0.08em] text-kishin-white">
-              STUDENT IDENTITY
+              {identityTitle}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <InfoRow label="Nama IC" value={student.icName} />
-            <InfoRow label="Class" value={student.class} />
-            <InfoRow label="Umur" value={`${student.age} Tahun`} />
-            <InfoRow label="Student ID" value={student.id} />
+            <InfoRow label="Nama IC" value={user.icName} />
+            {isStudent ? (
+              <InfoRow label="Class" value={user.class} />
+            ) : (
+              <InfoRow label="Subject / Materi" value={user.subject || "-"} />
+            )}
+            <InfoRow label="Umur" value={`${user.age} Tahun`} />
+            <InfoRow label={isStudent ? "Student ID" : "Staff ID"} value={user.id} />
           </div>
 
           <div className="mt-6 flex items-center justify-between border-t border-kishin-line/8 pt-5">
             <span className="text-xs tracking-[0.2em] text-kishin-gray">STATUS</span>
-            <StatusBadge status={student.status} />
+            <StatusBadge status={user.status} />
           </div>
         </div>
 
@@ -159,48 +172,65 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6">
-        <h2 className="mb-4 font-display text-xl tracking-[0.08em] text-kishin-white">
-          KELAS SAYA
-        </h2>
-        {classLoading ? (
-          <div className="glass-card h-40 animate-pulse rounded-2xl" />
-        ) : ownClass ? (
-          <div className="glass-card relative overflow-hidden rounded-2xl border border-kishin-red/25 p-6 shadow-red-glow-sm sm:p-7">
-            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-kishin-red/10 blur-3xl" />
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <h3 className="font-display text-2xl tracking-[0.05em] text-kishin-white">
-                  {ownClass.name}
-                </h3>
-                <p className="mt-1.5 max-w-lg text-xs leading-relaxed text-kishin-gray">
-                  {ownClass.description}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs">
-                  <span className="flex items-center gap-1.5 text-kishin-gray">
-                    <User className="h-3.5 w-3.5" />
-                    Wali Kelas:{" "}
-                    <span className="font-semibold text-kishin-white">{ownClass.waliKelas}</span>
-                  </span>
-                  <StatusBadge status={student.status} />
+      {showClassSection && (
+        <div className="mt-6">
+          <h2 className="mb-4 font-display text-xl tracking-[0.08em] text-kishin-white">
+            {isStudent ? "KELAS SAYA" : "KELAS WALI SAYA"}
+          </h2>
+          {classLoading ? (
+            <div className="glass-card h-40 animate-pulse rounded-2xl" />
+          ) : ownClass ? (
+            <div className="glass-card relative overflow-hidden rounded-2xl border border-kishin-red/25 p-6 shadow-red-glow-sm sm:p-7">
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-kishin-red/10 blur-3xl" />
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 className="font-display text-2xl tracking-[0.05em] text-kishin-white">
+                    {ownClass.name}
+                  </h3>
+                  <p className="mt-1.5 max-w-lg text-xs leading-relaxed text-kishin-gray">
+                    {ownClass.description}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs">
+                    <span className="flex items-center gap-1.5 text-kishin-gray">
+                      <User className="h-3.5 w-3.5" />
+                      Wali Kelas:{" "}
+                      <span className="font-semibold text-kishin-white">{ownClass.waliKelas}</span>
+                    </span>
+                    <StatusBadge status={isStudent ? user.status : ownClass.status} />
+                  </div>
                 </div>
+                <a
+                  href={ownClass.discordUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex shrink-0 items-center justify-center gap-2 rounded-lg border border-kishin-red/40 bg-kishin-red/10 px-4 py-2.5 text-xs font-bold tracking-[0.15em] text-kishin-redlight transition hover:bg-kishin-red/20"
+                >
+                  OPEN DISCORD KELAS <ExternalLink className="h-3.5 w-3.5" />
+                </a>
               </div>
-              <a
-                href={ownClass.discordUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex shrink-0 items-center justify-center gap-2 rounded-lg border border-kishin-red/40 bg-kishin-red/10 px-4 py-2.5 text-xs font-bold tracking-[0.15em] text-kishin-redlight transition hover:bg-kishin-red/20"
-              >
-                OPEN DISCORD KELAS <ExternalLink className="h-3.5 w-3.5" />
-              </a>
             </div>
+          ) : (
+            <div className="glass-card rounded-2xl p-6 text-sm text-kishin-gray">
+              Data kelas tidak ditemukan untuk <span className="font-semibold text-kishin-white">{user.class}</span>.
+            </div>
+          )}
+        </div>
+      )}
+
+      {!isStudent && !hasHomeroom && (
+        <div className="mt-6">
+          <h2 className="mb-4 font-display text-xl tracking-[0.08em] text-kishin-white">
+            TUGAS MENGAJAR
+          </h2>
+          <div className="glass-card flex items-start gap-3 rounded-2xl p-6">
+            <BookMarked className="mt-0.5 h-5 w-5 shrink-0 text-kishin-red" />
+            <p className="text-sm leading-relaxed text-kishin-gray">
+              Anda mengajar <span className="font-semibold text-kishin-white">{user.subject}</span> dan tidak
+              terikat pada satu kelas tertentu sebagai wali kelas.
+            </p>
           </div>
-        ) : (
-          <div className="glass-card rounded-2xl p-6 text-sm text-kishin-gray">
-            Data kelas tidak ditemukan untuk <span className="font-semibold text-kishin-white">{student.class}</span>.
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">

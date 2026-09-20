@@ -19,10 +19,10 @@ const LOCKED_BY_STATUS: Record<StudentStatus, FeatureKey[]> = {
   GRADUATED: ["coaching-clinic", "classes", "report"],
 };
 
-export function getLockedFeatures(status: StudentStatus): FeatureKey[] {
-  return LOCKED_BY_STATUS[status] ?? [];
+export function getLockedFeatures(status: string): FeatureKey[] {
+  return LOCKED_BY_STATUS[status as StudentStatus] ?? [];
 }
 
-export function isFeatureLocked(status: StudentStatus, feature: FeatureKey): boolean {
+export function isFeatureLocked(status: string, feature: FeatureKey): boolean {
   return getLockedFeatures(status).includes(feature);
 }
