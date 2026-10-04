@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { MediaProvider } from "@/context/MediaContext";
@@ -32,7 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH_THEME_SCRIPT }} />
         <ThemeProvider>
           <MediaProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <SessionProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </SessionProvider>
           </MediaProvider>
         </ThemeProvider>
       </body>

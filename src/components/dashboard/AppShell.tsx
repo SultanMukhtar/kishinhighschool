@@ -40,7 +40,8 @@ export default function AppShell({ children, title, feature }: AppShellProps) {
   }
 
   // Feature locks only ever apply to students - staff always have full access.
-  const locked = feature && user.role === "STUDENT" ? isFeatureLocked(user.status, feature) : false;
+  const locked =
+    feature && user.role === "USER" ? isFeatureLocked(user.displayStatus ?? "ACTIVE", feature) : false;
 
   return (
     <div className="relative min-h-screen w-full bg-kishin-black">
@@ -55,7 +56,7 @@ export default function AppShell({ children, title, feature }: AppShellProps) {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-10"
         >
-          {locked ? <LockedFeatureNotice status={user.status} /> : children}
+          {locked ? <LockedFeatureNotice status={user.displayStatus ?? "ACTIVE"} /> : children}
         </motion.main>
       </div>
     </div>

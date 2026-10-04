@@ -52,7 +52,7 @@ export default function ClassGrid({ classes, specialClassrooms }: ClassGridProps
 
               <div className="mb-4 flex flex-col gap-2 border-t border-kishin-line/8 pt-4 text-xs">
                 <Row label="STATUS">
-                  <StatusBadge status={isOwnClass && user ? user.status : c.status} />
+                  <StatusBadge status={isOwnClass && user ? user.displayStatus ?? c.status : c.status} />
                 </Row>
                 <Row label="PENANGGUNG JAWAB">
                   <span className="flex items-center gap-1.5 text-kishin-white">

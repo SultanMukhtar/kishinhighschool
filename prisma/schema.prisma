@@ -1,0 +1,226 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  USER
+}
+
+enum AccountStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  GRADUATED
+}
+
+enum TeacherRole {
+  TEACHER
+  COACH
+}
+
+enum ClassTeacherRole {
+  HOMEROOM
+  SUBJECT
+}
+
+enum AttendanceStatus {
+  HADIR
+  ALFA
+  IZIN
+  SAKIT
+  PENDING_VERIFICATION
+}
+
+// Field names/shape here follow Auth.js's PrismaAdapter contract exactly
+// (id/name/email/emailVerified/image) - renaming these breaks the adapter.
+// Discord's user id is available via accounts.find(a => a.provider === "discord")?.providerAccountId.
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String?       @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role          @default(USER)
+  status        AccountStatus @default(PENDING)
+  approvedById  String?
+  approvedAt    DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  studentProfile StudentProfile?
+  teacherProfile TeacherProfile?
+  icNameChanges  IcNameChangeRequest[]
+  auditLogs      AuditLog[]            @relation("ActorLogs")
+}
+
+model StudentProfile {
+  id             String        @id @default(cuid())
+  userId         String        @unique
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  icName         String
+  robloxUsername String?
+  age            Int
+  classId        String
+  class          Class         @relation(fields: [classId], references: [id])
+  status         StudentStatus @default(ACTIVE)
+
+  submissions Submission[]
+  attendance  AttendanceRecord[]
+}
+
+model TeacherProfile {
+  id             String      @id @default(cuid())
+  userId         String      @unique
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  icName         String
+  subject        String
+  robloxUsername String?
+  age            Int?
+  role           TeacherRole @default(TEACHER)
+
+  classes ClassTeacher[]
+}
+
+model Class {
+  id           String  @id @default(cuid())
+  name         String  @unique
+  description  String?
+  status       String?
+  akses        String?
+  discordUrl   String?
+  crewPhotoUrl String?
+  crewNickname String?
+  crewLore     String?
+
+  students    StudentProfile[]
+  teachers    ClassTeacher[]
+  assignments Assignment[]
+}
+
+model ClassTeacher {
+  id        String           @id @default(cuid())
+  classId   String
+  teacherId String
+  role      ClassTeacherRole @default(SUBJECT)
+  class     Class            @relation(fields: [classId], references: [id])
+  teacher   TeacherProfile   @relation(fields: [teacherId], references: [id])
+
+  @@unique([classId, teacherId])
+}
+
+model IcNameChangeRequest {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  oldName    String
+  newName    String
+  reason     String?
+  status     AccountStatus @default(PENDING)
+  reviewedBy String?
+  reviewedAt DateTime?
+  createdAt  DateTime      @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actor      User     @relation("ActorLogs", fields: [actorId], references: [id])
+  action     String
+  targetType String
+  targetId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
+
+model Assignment {
+  id          String   @id @default(cuid())
+  classId     String
+  class       Class    @relation(fields: [classId], references: [id])
+  teacherId   String
+  title       String
+  description String
+  dueDate     DateTime
+  createdAt   DateTime @default(now())
+
+  submissions Submission[]
+}
+
+model Submission {
+  id           String         @id @default(cuid())
+  assignmentId String
+  assignment   Assignment     @relation(fields: [assignmentId], references: [id])
+  studentId    String
+  student      StudentProfile @relation(fields: [studentId], references: [id])
+  content      String?
+  fileUrl      String?
+  submittedAt  DateTime       @default(now())
+  grade        Int?
+  feedback     String?
+
+  @@unique([assignmentId, studentId])
+}
+
+model AttendanceRecord {
+  id           String           @id @default(cuid())
+  studentId    String
+  student      StudentProfile   @relation(fields: [studentId], references: [id])
+  date         DateTime
+  checkInAt    DateTime?
+  status       AttendanceStatus @default(ALFA)
+  photoUrl     String?
+  verifiedById String?
+  verifiedAt   DateTime?
+  note         String?
+
+  @@unique([studentId, date])
+}
+
+// --- Auth.js required models ---
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

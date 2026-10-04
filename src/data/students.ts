@@ -110,20 +110,3 @@ export function mapStudentRow(row: SheetRow, classNameOverride?: string): Studen
     status: VALID_STATUSES.includes(status) ? status : "ACTIVE",
   };
 }
-
-/** Pure matcher - works on any already-loaded student list, client or server. */
-export function findStudent(
-  students: Student[],
-  icName: string,
-  className: string,
-  age: number
-): Student | undefined {
-  const normalizedName = icName.trim().toLowerCase();
-  const normalizedClass = className.trim().toUpperCase();
-  return students.find(
-    (s) =>
-      s.icName.trim().toLowerCase() === normalizedName &&
-      s.class.trim().toUpperCase() === normalizedClass &&
-      s.age === age
-  );
-}

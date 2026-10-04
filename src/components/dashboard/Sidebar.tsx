@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   Home,
   User,
@@ -44,14 +44,9 @@ interface SidebarProps {
 
 export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const { user, logout } = useAuth();
-  const lockedFeatures = user && user.role === "STUDENT" ? getLockedFeatures(user.status) : [];
-
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
+  const lockedFeatures =
+    user && user.role === "USER" ? getLockedFeatures(user.displayStatus ?? "ACTIVE") : [];
 
   const content = (
     <div className="flex h-full flex-col">
@@ -112,7 +107,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
       <div className="border-t border-kishin-line/8 p-4">
         <button
-          onClick={handleLogout}
+          onClick={logout}
           className="flex w-full items-center gap-3 rounded-lg border border-kishin-red/30 bg-kishin-red/5 px-3.5 py-2.5 text-sm font-semibold tracking-wide text-kishin-redlight transition hover:bg-kishin-red/20"
         >
           <LogOut className="h-[18px] w-[18px]" />
@@ -120,7 +115,7 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </button>
         <div className="mt-3 flex items-center gap-1.5 px-1 text-[10px] tracking-[0.2em] text-kishin-gray/70">
           <ShieldCheck className="h-3 w-3" />
-          LOCAL SESSION SECURED
+          SESSION SECURED
         </div>
       </div>
     </div>

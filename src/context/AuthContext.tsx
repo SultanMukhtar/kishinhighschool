@@ -1,45 +1,33 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { AuthUser, getSession, clearSession } from "@/lib/auth";
+import { createContext, useContext, ReactNode } from "react";
+import { useSession, signOut } from "next-auth/react";
+import type { AuthUser } from "@/lib/auth";
 
 interface AuthContextValue {
   user: AuthUser | null;
   isLoading: boolean;
-  refresh: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
   isLoading: true,
-  refresh: () => {},
   logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: session, status } = useSession();
 
-  const refresh = () => {
-    setUser(getSession());
+  const value: AuthContextValue = {
+    user: session?.user ?? null,
+    isLoading: status === "loading",
+    logout: () => {
+      signOut({ callbackUrl: "/login" });
+    },
   };
 
-  useEffect(() => {
-    refresh();
-    setIsLoading(false);
-  }, []);
-
-  const logout = () => {
-    clearSession();
-    setUser(null);
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, isLoading, refresh, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

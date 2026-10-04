@@ -11,24 +11,32 @@ export default function ProfilePage() {
   const { user } = useAuth();
   if (!user) return <AppShell>{null}</AppShell>;
 
-  const isStudent = user.role === "STUDENT";
-  const pageTitle = isStudent ? "STUDENT PROFILE" : user.role === "COACH" ? "COACH PROFILE" : "TEACHER PROFILE";
+  const isStudent = user.role === "USER";
+  const pageTitle = isStudent
+    ? "STUDENT PROFILE"
+    : user.teacherRole === "COACH"
+      ? "COACH PROFILE"
+      : "TEACHER PROFILE";
+
+  const displayName = user.icName ?? user.name ?? "";
+  const displayStatus = user.displayStatus ?? "ACTIVE";
+  const displayAge = user.age ?? 0;
 
   const fields = isStudent
     ? [
-        { label: "IC Name", value: user.icName, icon: IdCard },
-        { label: "Roblox Username", value: user.robloxUsername, icon: Gamepad2 },
-        { label: "Discord Username", value: user.discordUsername, icon: MessageCircle },
-        { label: "Class", value: user.class, icon: GraduationCap },
-        { label: "IC Age", value: `${user.age} Tahun`, icon: Cake },
+        { label: "IC Name", value: displayName, icon: IdCard },
+        { label: "Roblox Username", value: user.robloxUsername || "-", icon: Gamepad2 },
+        { label: "Discord Username", value: user.name || "-", icon: MessageCircle },
+        { label: "Class", value: user.class ?? "-", icon: GraduationCap },
+        { label: "IC Age", value: `${displayAge} Tahun`, icon: Cake },
         { label: "Student ID", value: user.id, icon: Fingerprint },
       ]
     : [
-        { label: "IC Name", value: user.icName, icon: IdCard },
-        { label: "Roblox Username", value: user.robloxUsername, icon: Gamepad2 },
-        { label: "Discord Username", value: user.discordUsername, icon: MessageCircle },
+        { label: "IC Name", value: displayName, icon: IdCard },
+        { label: "Roblox Username", value: user.robloxUsername || "-", icon: Gamepad2 },
+        { label: "Discord Username", value: user.name || "-", icon: MessageCircle },
         { label: "Subject / Materi", value: user.subject || "-", icon: BookMarked },
-        { label: "IC Age", value: `${user.age} Tahun`, icon: Cake },
+        { label: "IC Age", value: `${displayAge} Tahun`, icon: Cake },
         { label: "Staff ID", value: user.id, icon: Fingerprint },
       ];
 
@@ -52,11 +60,11 @@ export default function ProfilePage() {
           <KishinLogo size={80} className="border-2 shadow-red-glow-sm" />
           <div>
             <h2 className="font-display text-2xl tracking-[0.05em] text-kishin-white">
-              {user.icName}
+              {displayName}
             </h2>
             <p className="text-xs tracking-[0.15em] text-kishin-gray">{user.id}</p>
             <div className="mt-2 flex justify-center gap-2 sm:justify-start">
-              <StatusBadge status={user.status} />
+              <StatusBadge status={displayStatus} />
             </div>
           </div>
         </div>

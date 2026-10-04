@@ -34,9 +34,11 @@ export default function Topbar({ user, onMenuClick, title }: TopbarProps) {
           <User className="h-4 w-4" />
         </div>
         <div className="hidden text-left sm:block">
-          <p className="text-xs font-semibold leading-tight text-kishin-white">{user.icName}</p>
+          <p className="text-xs font-semibold leading-tight text-kishin-white">
+            {user.icName ?? user.name}
+          </p>
           <p className="text-[10px] leading-tight text-kishin-gray">
-            {user.role === "STUDENT" ? user.class : user.subject || user.class}
+            {user.role === "USER" ? user.class : user.subject || user.class}
           </p>
         </div>
       </div>

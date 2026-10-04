@@ -42,7 +42,7 @@ export default function DashboardPage() {
   const [ownClass, setOwnClass] = useState<SchoolClass | null>(null);
   const [classLoading, setClassLoading] = useState(true);
 
-  const isStudent = user?.role === "STUDENT";
+  const isStudent = user?.role === "USER";
   const hasHomeroom = !!user && user.class && user.class !== "SEMUA KELAS";
   const showClassSection = isStudent || hasHomeroom;
 
@@ -72,7 +72,7 @@ export default function DashboardPage() {
         if (cancelled) return;
         const classes: SchoolClass[] = Array.isArray(json?.data) ? json.data : [];
         const match = classes.find(
-          (c) => c.name.trim().toUpperCase() === user.class.trim().toUpperCase()
+          (c) => c.name.trim().toUpperCase() === (user.class ?? "").trim().toUpperCase()
         );
         setOwnClass(match ?? null);
       })
@@ -87,8 +87,17 @@ export default function DashboardPage() {
 
   if (!user) return <AppShell>{null}</AppShell>;
 
-  const lockedFeatures = isStudent ? getLockedFeatures(user.status) : [];
-  const identityTitle = isStudent ? "STUDENT IDENTITY" : user.role === "COACH" ? "COACH IDENTITY" : "TEACHER IDENTITY";
+  const displayName = user.icName ?? user.name ?? "";
+  const displayStatus = user.displayStatus ?? "ACTIVE";
+  const displayClass = user.class ?? "-";
+  const displayAge = user.age ?? 0;
+
+  const lockedFeatures = isStudent ? getLockedFeatures(displayStatus) : [];
+  const identityTitle = isStudent
+    ? "STUDENT IDENTITY"
+    : user.teacherRole === "COACH"
+      ? "COACH IDENTITY"
+      : "TEACHER IDENTITY";
 
   return (
     <AppShell title="Dashboard">
@@ -97,7 +106,7 @@ export default function DashboardPage() {
           SELAMAT DATANG DI KISHIN HIGH SCHOOL
         </p>
         <h1 className="font-display text-3xl tracking-[0.06em] text-kishin-white sm:text-4xl">
-          Welcome, {user.icName}
+          Welcome, {displayName}
         </h1>
         <p className="mt-2 text-sm text-kishin-gray">
           Portal pengelolaan sekolah virtual untuk server Gakuran Roleplay.
@@ -109,7 +118,7 @@ export default function DashboardPage() {
           <Lock className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
           <p className="text-xs leading-relaxed text-amber-800/80 dark:text-amber-200/80">
             Status keanggotaan Anda saat ini adalah{" "}
-            <span className="font-bold text-amber-800 dark:text-amber-200">{user.status}</span>, sehingga beberapa
+            <span className="font-bold text-amber-800 dark:text-amber-200">{displayStatus}</span>, sehingga beberapa
             fitur (ditandai ikon gembok di sidebar) sedang tidak dapat diakses.
           </p>
         </div>
@@ -126,19 +135,19 @@ export default function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <InfoRow label="Nama IC" value={user.icName} />
+            <InfoRow label="Nama IC" value={displayName} />
             {isStudent ? (
-              <InfoRow label="Class" value={user.class} />
+              <InfoRow label="Class" value={displayClass} />
             ) : (
               <InfoRow label="Subject / Materi" value={user.subject || "-"} />
             )}
-            <InfoRow label="Umur" value={`${user.age} Tahun`} />
+            <InfoRow label="Umur" value={`${displayAge} Tahun`} />
             <InfoRow label={isStudent ? "Student ID" : "Staff ID"} value={user.id} />
           </div>
 
           <div className="mt-6 flex items-center justify-between border-t border-kishin-line/8 pt-5">
             <span className="text-xs tracking-[0.2em] text-kishin-gray">STATUS</span>
-            <StatusBadge status={user.status} />
+            <StatusBadge status={displayStatus} />
           </div>
         </div>
 
@@ -196,7 +205,7 @@ export default function DashboardPage() {
                       Wali Kelas:{" "}
                       <span className="font-semibold text-kishin-white">{ownClass.waliKelas}</span>
                     </span>
-                    <StatusBadge status={isStudent ? user.status : ownClass.status} />
+                    <StatusBadge status={isStudent ? displayStatus : ownClass.status} />
                   </div>
                 </div>
                 <a
@@ -211,7 +220,7 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="glass-card rounded-2xl p-6 text-sm text-kishin-gray">
-              Data kelas tidak ditemukan untuk <span className="font-semibold text-kishin-white">{user.class}</span>.
+              Data kelas tidak ditemukan untuk <span className="font-semibold text-kishin-white">{displayClass}</span>.
             </div>
           )}
         </div>

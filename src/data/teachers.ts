@@ -174,20 +174,3 @@ export function mapTeacherRow(row: SheetRow): Teacher | null {
     status: VALID_STATUSES.includes(status) ? status : "ACTIVE",
   };
 }
-
-/** Pure matcher - works on any already-loaded teacher list, client or server. */
-export function findTeacher(
-  teachers: Teacher[],
-  icName: string,
-  robloxUsername: string,
-  age: number
-): Teacher | undefined {
-  const normalizedName = icName.trim().toLowerCase();
-  const normalizedRoblox = robloxUsername.trim().toLowerCase();
-  return teachers.find(
-    (t) =>
-      t.icName.trim().toLowerCase() === normalizedName &&
-      t.robloxUsername.trim().toLowerCase() === normalizedRoblox &&
-      t.age === age
-  );
-}

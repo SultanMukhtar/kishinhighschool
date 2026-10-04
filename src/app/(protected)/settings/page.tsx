@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Settings, LogOut, Info, Sun, Moon } from "lucide-react";
 import AppShell from "@/components/dashboard/AppShell";
 import PageHeader from "@/components/ui/PageHeader";
@@ -10,14 +9,8 @@ import { useTheme } from "@/context/ThemeContext";
 export default function SettingsPage() {
   const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
-  const router = useRouter();
 
   if (!user) return <AppShell>{null}</AppShell>;
-
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
 
   return (
     <AppShell title="Settings">
@@ -36,7 +29,7 @@ export default function SettingsPage() {
           <div className="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
-                {user.role === "STUDENT" ? "STUDENT ID" : "STAFF ID"}
+                {user.role === "USER" ? "STUDENT ID" : "STAFF ID"}
               </p>
               <p className="mt-1 font-semibold text-kishin-white">{user.id}</p>
             </div>
@@ -44,19 +37,19 @@ export default function SettingsPage() {
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
                 IC NAME
               </p>
-              <p className="mt-1 font-semibold text-kishin-white">{user.icName}</p>
+              <p className="mt-1 font-semibold text-kishin-white">{user.icName ?? "-"}</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
                 CLASS
               </p>
-              <p className="mt-1 font-semibold text-kishin-white">{user.class}</p>
+              <p className="mt-1 font-semibold text-kishin-white">{user.class ?? "-"}</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold tracking-[0.15em] text-kishin-gray">
-                SESSION STORAGE
+                MASUK DENGAN
               </p>
-              <p className="mt-1 font-semibold text-kishin-white">LocalStorage (Browser)</p>
+              <p className="mt-1 font-semibold text-kishin-white">Discord</p>
             </div>
           </div>
         </div>
@@ -97,9 +90,8 @@ export default function SettingsPage() {
         <div className="glass-card flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
           <p className="text-xs leading-relaxed text-amber-800/80 dark:text-amber-200/80">
-            Website ini tidak menggunakan database server. Seluruh sesi dan data pengaturan hanya
-            tersimpan pada LocalStorage perangkat/browser ini dan tidak tersinkronisasi ke server
-            manapun.
+            Sesi login kamu dikelola lewat akun Discord dan tersimpan secara aman di server -
+            logout di satu perangkat tidak memengaruhi perangkat lain yang masih login.
           </p>
         </div>
 
@@ -111,7 +103,7 @@ export default function SettingsPage() {
             </p>
           </div>
           <button
-            onClick={handleLogout}
+            onClick={logout}
             className="flex items-center justify-center gap-2 rounded-lg bg-kishin-red px-4 py-2.5 text-xs font-bold tracking-[0.15em] text-white transition hover:bg-kishin-redlight"
           >
             <LogOut className="h-4 w-4" />
